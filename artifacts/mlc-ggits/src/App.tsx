@@ -1,8 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
-import { Terminal, Users, Calendar, Trophy, Code2, ArrowRight, Linkedin, Twitter, ExternalLink, Activity } from "lucide-react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+} from "framer-motion";
+import {
+  Terminal,
+  Users,
+  Calendar,
+  Trophy,
+  Code2,
+  ArrowRight,
+  Linkedin,
+  ExternalLink,
+  Activity,
+} from "lucide-react";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -25,7 +41,8 @@ const MatrixRain = () => {
     resize();
     window.addEventListener("resize", resize);
 
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
     const fontSize = 14;
     const columns = canvas.width / fontSize;
     const drops: number[] = [];
@@ -59,7 +76,12 @@ const MatrixRain = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="matrix-bg opacity-30 pointer-events-none fixed inset-0 z-0" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="matrix-bg opacity-30 pointer-events-none fixed inset-0 z-0"
+    />
+  );
 };
 
 // TYPING TEXT COMPONENT
@@ -68,7 +90,7 @@ const TypewriterText = () => {
     "> building the future",
     "> learning together",
     "> hack the knowledge",
-    "> init mlc_ggits.sh"
+    "> init mlc_ggits.sh",
   ];
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
@@ -108,7 +130,15 @@ const TypewriterText = () => {
 };
 
 // ANIMATED COUNTER
-const Counter = ({ end, label, icon: Icon }: { end: number, label: string, icon: any }) => {
+const Counter = ({
+  end,
+  label,
+  icon: Icon,
+}: {
+  end: number;
+  label: string;
+  icon: any;
+}) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -117,27 +147,27 @@ const Counter = ({ end, label, icon: Icon }: { end: number, label: string, icon:
     if (inView) {
       let startTime: number;
       const duration = 2000;
-      
+
       const animate = (timestamp: number) => {
         if (!startTime) startTime = timestamp;
         const progress = timestamp - startTime;
         const percentage = Math.min(progress / duration, 1);
-        
+
         // Easing out cubic
         const easeOut = 1 - Math.pow(1 - percentage, 3);
         setCount(Math.floor(easeOut * end));
-        
+
         if (progress < duration) {
           requestAnimationFrame(animate);
         }
       };
-      
+
       requestAnimationFrame(animate);
     }
   }, [inView, end]);
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -152,7 +182,9 @@ const Counter = ({ end, label, icon: Icon }: { end: number, label: string, icon:
         {count}
         <span className="text-[#00FF41]">+</span>
       </div>
-      <div className="text-gray-400 font-medium tracking-wide uppercase text-sm">{label}</div>
+      <div className="text-gray-400 font-medium tracking-wide uppercase text-sm">
+        {label}
+      </div>
     </motion.div>
   );
 };
@@ -179,21 +211,39 @@ function Home() {
                 <div className="w-3 h-3 bg-[#FFBA08]"></div>
               </div>
             </div>
-            <span className="font-semibold text-lg hidden sm:block">Microsoft Learn</span>
+            <span className="font-semibold text-lg hidden sm:block">
+              Microsoft Learn
+            </span>
             <span className="text-gray-500 hidden sm:block">|</span>
-            <span className="font-mono font-bold text-[#00D4FF] tracking-tight">GGITS</span>
+            <span className="font-mono font-bold text-[#00D4FF] tracking-tight">
+              GGITS
+            </span>
           </div>
           <nav className="flex gap-6 font-mono text-sm">
-            <a href="#events" className="text-gray-300 hover:text-white transition-colors">/events</a>
-            <a href="#about" className="text-gray-300 hover:text-white transition-colors">/about</a>
-            <a href="#join" className="text-[#00FF41] hover:text-[#00FF41]/80 transition-colors">/join</a>
+            <a
+              href="#events"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              /events
+            </a>
+            <a
+              href="#about"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              /about
+            </a>
+            <a
+              href="#join"
+              className="text-[#00FF41] hover:text-[#00FF41]/80 transition-colors"
+            >
+              /join
+            </a>
           </nav>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="relative z-10 pt-24">
-        
         {/* Hero Section */}
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center py-20">
           <motion.div
@@ -215,14 +265,14 @@ function Home() {
             <div className="inline-block px-4 py-1.5 rounded-full border border-[#0078D4]/30 bg-[#0078D4]/10 text-[#00D4FF] font-mono text-sm mb-6 backdrop-blur-md">
               STATUS: ONLINE & READY
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-4">
-              Microsoft Learn <br/>
+              Microsoft Learn <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] via-[#00D4FF] to-[#00FF41]">
                 Community
               </span>
             </h1>
-            
+
             <h2 className="text-2xl md:text-3xl font-mono text-gray-400 mb-12">
               GGITS <span className="text-gray-600">_</span> Jabalpur
             </h2>
@@ -232,17 +282,18 @@ function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a 
-                href="#events" 
+              <a
+                href="#events"
                 className="group relative inline-flex items-center gap-2 px-8 py-4 bg-[#0078D4] text-white font-semibold rounded-none overflow-hidden"
               >
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform ease-out"></div>
                 <span className="relative z-10 flex items-center gap-2 font-mono">
-                  [ EXECUTE ] <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  [ EXECUTE ]{" "}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </a>
-              <a 
-                href="#about" 
+              <a
+                href="#about"
                 className="group px-8 py-4 bg-transparent border border-white/20 hover:border-white/50 text-white font-mono transition-colors"
               >
                 VIEW_DOCS.md
@@ -256,7 +307,10 @@ function Home() {
         </section>
 
         {/* Events Section */}
-        <section id="events" className="py-24 px-6 bg-black/40 border-y border-white/5 relative">
+        <section
+          id="events"
+          className="py-24 px-6 bg-black/40 border-y border-white/5 relative"
+        >
           <div className="container mx-auto max-w-6xl">
             <div className="flex items-center gap-4 mb-16">
               <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#0078D4]"></div>
@@ -268,7 +322,7 @@ function Home() {
             </div>
 
             {/* Featured Event: Copilot Dev Days */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -277,17 +331,22 @@ function Home() {
               <div className="bg-[#0d0d12] p-8 md:p-12 rounded-lg relative overflow-hidden flex flex-col md:flex-row gap-8 items-center border border-white/5">
                 {/* Copilot background glow */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#6E40C9] rounded-full blur-[150px] opacity-10 pointer-events-none translate-x-1/3 -translate-y-1/3"></div>
-                
+
                 <div className="flex-1 z-10">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6E40C9]/20 border border-[#6E40C9]/30 text-[#00D4FF] text-xs font-mono mb-6">
                     <span className="w-2 h-2 rounded-full bg-[#00FF41] animate-pulse"></span>
                     FEATURED EVENT
                   </div>
-                  <h3 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">GitHub Copilot <br/><span className="text-[#6E40C9]">Dev Days</span></h3>
+                  <h3 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+                    GitHub Copilot <br />
+                    <span className="text-[#6E40C9]">Dev Days</span>
+                  </h3>
                   <p className="text-gray-400 text-lg mb-8 max-w-xl leading-relaxed">
-                    An exclusive hands-on event to explore AI-powered development with GitHub Copilot. Level up your coding game with Microsoft's AI pair programmer.
+                    An exclusive hands-on event to explore AI-powered
+                    development with GitHub Copilot. Level up your coding game
+                    with Microsoft's AI pair programmer.
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-4 font-mono text-sm mb-8 text-gray-300">
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
                       <Calendar className="w-4 h-4 text-[#0078D4]" /> 11 April
@@ -297,9 +356,9 @@ function Home() {
                     </div>
                   </div>
 
-                  <a 
-                    href="https://luma.com/dwdrrbzt" 
-                    target="_blank" 
+                  <a
+                    href="https://luma.com/dwdrrbzt"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-8 py-4 bg-[#6E40C9] hover:bg-[#5a34a6] text-white font-mono transition-colors shadow-[0_0_20px_rgba(110,64,201,0.4)]"
                   >
@@ -324,9 +383,9 @@ function Home() {
               {[
                 { title: "AI for Developers Workshop", date: "Past" },
                 { title: "Cloud Computing Bootcamp", date: "Past" },
-                { title: "Open Source Contribution Sprint", date: "Past" }
+                { title: "Open Source Contribution Sprint", date: "Past" },
               ].map((event, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -345,7 +404,8 @@ function Home() {
                   </div>
                   <h4 className="text-xl font-bold mb-2">{event.title}</h4>
                   <div className="font-mono text-sm text-gray-500 mt-4 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600"></span> LOG ARCHIVED
+                    <span className="w-2 h-2 rounded-full bg-gray-600"></span>{" "}
+                    LOG ARCHIVED
                   </div>
                 </motion.div>
               ))}
@@ -356,7 +416,7 @@ function Home() {
         {/* About Section */}
         <section id="about" className="py-24 px-6 relative">
           <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#0078D4] rounded-full blur-[200px] opacity-10 pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
-          
+
           <div className="container mx-auto max-w-5xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -364,24 +424,37 @@ function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <div className="font-mono text-[#00D4FF] mb-4">// README.md</div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Decode your <br/>potential.</h2>
+                <div className="font-mono text-[#00D4FF] mb-4">
+                  // README.md
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                  Decode your <br />
+                  potential.
+                </h2>
                 <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                  Microsoft Learn Community at GGITS is an elite hub for developers, tinkerers, and tech enthusiasts. We bridge the gap between academic theory and bleeding-edge industry practice.
+                  Microsoft Learn Community at GGITS is an elite hub for
+                  developers, tinkerers, and tech enthusiasts. We bridge the gap
+                  between academic theory and bleeding-edge industry practice.
                 </p>
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                  Whether you're compiling your first "Hello World", deploying scalable cloud architectures, or training neural networks, MLC provides the environment, resources, and network to escalate your skills.
+                  Whether you're compiling your first "Hello World", deploying
+                  scalable cloud architectures, or training neural networks, MLC
+                  provides the environment, resources, and network to escalate
+                  your skills.
                 </p>
-                
+
                 <ul className="space-y-4 font-mono text-sm text-gray-300">
                   <li className="flex items-center gap-3">
-                    <span className="text-[#00FF41]">~%</span> Access to Microsoft ecosystem tools
+                    <span className="text-[#00FF41]">~%</span> Access to
+                    Microsoft ecosystem tools
                   </li>
                   <li className="flex items-center gap-3">
-                    <span className="text-[#00FF41]">~%</span> Hands-on technical workshops
+                    <span className="text-[#00FF41]">~%</span> Hands-on
+                    technical workshops
                   </li>
                   <li className="flex items-center gap-3">
-                    <span className="text-[#00FF41]">~%</span> Peer-to-peer code reviews & networking
+                    <span className="text-[#00FF41]">~%</span> Peer-to-peer code
+                    reviews & networking
                   </li>
                 </ul>
               </motion.div>
@@ -399,16 +472,46 @@ function Home() {
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  
+
                   <div className="space-y-2 opacity-80">
-                    <p><span className="text-[#00D4FF]">const</span> <span className="text-white">community</span> = <span className="text-[#00D4FF]">new</span> <span className="text-[#00FF41]">MLC</span>(<span className="text-[#FFBA08]">'GGITS'</span>);</p>
-                    <p className="mt-4"><span className="text-gray-500">// Initialize growth protocol</span></p>
-                    <p>community.<span className="text-[#05A6F0]">on</span>(<span className="text-[#FFBA08]">'join'</span>, (<span className="text-[#00D4FF]">member</span>) =&gt; {'{'}</p>
-                    <p className="pl-4">member.<span className="text-[#05A6F0]">upgradeSkills</span>();</p>
-                    <p className="pl-4">member.<span className="text-[#05A6F0]">expandNetwork</span>();</p>
-                    <p className="pl-4">member.<span className="text-[#05A6F0]">buildProjects</span>();</p>
-                    <p className="pl-4"><span className="text-[#00D4FF]">return</span> <span className="text-[#FFBA08]">'Developer Unlocked'</span>;</p>
-                    <p>{'}'});</p>
+                    <p>
+                      <span className="text-[#00D4FF]">const</span>{" "}
+                      <span className="text-white">community</span> ={" "}
+                      <span className="text-[#00D4FF]">new</span>{" "}
+                      <span className="text-[#00FF41]">MLC</span>(
+                      <span className="text-[#FFBA08]">'GGITS'</span>);
+                    </p>
+                    <p className="mt-4">
+                      <span className="text-gray-500">
+                        // Initialize growth protocol
+                      </span>
+                    </p>
+                    <p>
+                      community.<span className="text-[#05A6F0]">on</span>(
+                      <span className="text-[#FFBA08]">'join'</span>, (
+                      <span className="text-[#00D4FF]">member</span>) =&gt;{" "}
+                      {"{"}
+                    </p>
+                    <p className="pl-4">
+                      member.
+                      <span className="text-[#05A6F0]">upgradeSkills</span>();
+                    </p>
+                    <p className="pl-4">
+                      member.
+                      <span className="text-[#05A6F0]">expandNetwork</span>();
+                    </p>
+                    <p className="pl-4">
+                      member.
+                      <span className="text-[#05A6F0]">buildProjects</span>();
+                    </p>
+                    <p className="pl-4">
+                      <span className="text-[#00D4FF]">return</span>{" "}
+                      <span className="text-[#FFBA08]">
+                        'Developer Unlocked'
+                      </span>
+                      ;
+                    </p>
+                    <p>{"}"});</p>
                     <p className="mt-4 animate-pulse text-[#00FF41]">&gt; _</p>
                   </div>
                 </div>
@@ -432,18 +535,21 @@ function Home() {
         {/* CTA Section */}
         <section id="join" className="py-32 px-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0078D4]/10 pointer-events-none"></div>
-          
+
           <div className="container mx-auto max-w-4xl text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">Ready to compile?</h2>
+              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                Ready to compile?
+              </h2>
               <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-                Join the network. Get access to exclusive resources, mentorship, and a community of builders who speak your language.
+                Join the network. Get access to exclusive resources, mentorship,
+                and a community of builders who speak your language.
               </p>
-              
+
               <a
                 href="https://chat.whatsapp.com/Hb6tPlQTpnyJbKttmrfIVx"
                 target="_blank"
@@ -455,7 +561,6 @@ function Home() {
             </motion.div>
           </div>
         </section>
-
       </main>
 
       {/* Footer */}
@@ -470,25 +575,35 @@ function Home() {
                 <div className="w-4 h-4 bg-[#FFBA08]"></div>
               </div>
               <div className="flex flex-col">
-                <span className="font-bold leading-none">Microsoft Learn Community</span>
-                <span className="font-mono text-xs text-gray-500">GGITS Jabalpur</span>
+                <span className="font-bold leading-none">
+                  Microsoft Learn Community
+                </span>
+                <span className="font-mono text-xs text-gray-500">
+                  GGITS Jabalpur
+                </span>
               </div>
             </div>
-            
+
             <div className="flex gap-6">
-              <a href="https://www.linkedin.com/company/ms-ggits/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#0078D4] transition-colors">
+              <a
+                href="https://www.linkedin.com/company/ms-ggits/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-[#0078D4] transition-colors"
+              >
                 <Linkedin className="w-6 h-6" />
-              </a>
-              <a href="#" className="text-gray-500 hover:text-[#00D4FF] transition-colors">
-                <Twitter className="w-6 h-6" />
               </a>
             </div>
           </div>
-          
+
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600 font-mono">
-            <p>© {new Date().getFullYear()} Microsoft Learn Community GGITS. All systems operational.</p>
+            <p>
+              © {new Date().getFullYear()} Microsoft Learn Community GGITS. All
+              systems operational.
+            </p>
             <p className="flex items-center gap-2">
-              Designed with <span className="text-[#00FF41]">♥</span> by hackers
+              Designed with <span className="text-[#00FF41]">♥</span> by
+              Community & Revansh Sharma
             </p>
           </div>
         </div>
