@@ -233,6 +233,12 @@ function Home() {
               /about
             </a>
             <a
+              href="#certdrive"
+              className="text-[#00D4FF] hover:text-white transition-colors"
+            >
+              /certdrive
+            </a>
+            <a
               href="#team"
               className="text-gray-300 hover:text-white transition-colors"
             >
@@ -523,6 +529,65 @@ function Home() {
                 </div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* April Certification Drive Section */}
+        <section id="certdrive" className="py-24 px-6 border-t border-white/5 relative overflow-hidden">
+          {/* Background glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0078D4]/10 via-transparent to-[#00FF41]/5 pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 w-[700px] h-[300px] bg-[#0078D4] rounded-full blur-[180px] opacity-10 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+
+          <div className="container mx-auto max-w-4xl relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center"
+            >
+              {/* Terminal badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00FF41]/30 bg-[#00FF41]/5 text-[#00FF41] font-mono text-sm mb-8">
+                <span className="w-2 h-2 rounded-full bg-[#00FF41] animate-pulse"></span>
+                REGISTRATION_OPEN
+              </div>
+
+              <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+                April{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] to-[#00D4FF]">
+                  Certification
+                </span>{" "}
+                Drive
+              </h2>
+
+              <p className="text-gray-400 text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
+                Level up your credentials. Complete Microsoft Learn paths, earn badges, and get officially certified — all in April.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-6 font-mono text-sm text-gray-400 mb-10">
+                <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
+                  <Calendar className="w-4 h-4 text-[#0078D4]" /> April 2025
+                </div>
+                <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
+                  <span className="w-2 h-2 rounded-full bg-[#00FF41]"></span> Free to Participate
+                </div>
+                <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
+                  <Trophy className="w-4 h-4 text-[#FFBA08]" /> Badges & Certificates
+                </div>
+              </div>
+
+              <a
+                href="https://forms.gle/5ivaYPAfrjFf3kzs7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center gap-3 px-10 py-5 bg-[#0078D4] text-white font-bold font-mono text-lg overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(0,120,212,0.5)]"
+              >
+                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <span className="relative z-10 flex items-center gap-2">
+                  REGISTER_NOW <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </a>
+            </motion.div>
           </div>
         </section>
 
