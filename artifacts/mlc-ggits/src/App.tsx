@@ -233,6 +233,12 @@ function Home() {
               /about
             </a>
             <a
+              href="#team"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              /team
+            </a>
+            <a
               href="#join"
               className="text-[#00FF41] hover:text-[#00FF41]/80 transition-colors"
             >
@@ -522,12 +528,136 @@ function Home() {
 
         {/* Stats Section */}
         <section className="py-20 px-6 border-t border-white/5 bg-black/20">
-          <div className="container mx-auto max-w-5xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+          <div className="container mx-auto max-w-3xl">
+            <div className="grid grid-cols-2 gap-6 md:gap-10">
               <Counter end={500} label="Active Members" icon={Users} />
               <Counter end={24} label="Events Held" icon={Calendar} />
-              <Counter end={150} label="Projects Built" icon={Code2} />
-              <Counter end={15} label="Hackathons Won" icon={Trophy} />
+            </div>
+          </div>
+        </section>
+
+        {/* Leaderboard Section */}
+        <section className="py-24 px-6 border-t border-white/5 relative">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFBA08] rounded-full blur-[200px] opacity-5 pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
+          <div className="container mx-auto max-w-3xl">
+            <div className="flex items-center gap-4 mb-12">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#FFBA08]"></div>
+              <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight text-white flex items-center gap-3">
+                <Trophy className="text-[#FFBA08]" />
+                TOP_BADGE_EARNERS
+              </h2>
+              <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#FFBA08]"></div>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { rank: 1, name: "Adarsh Pandey", badges: 222 },
+                { rank: 2, name: "Pranjal Tiwari", badges: 172 },
+                { rank: 3, name: "Aastha Goutam", badges: 171 },
+                { rank: 4, name: "Sanskrati Malviya", badges: 121 },
+                { rank: 5, name: "Sanya Nema & Rishi Parashar", badges: 113 },
+                { rank: 6, name: "Aditi Dhurwey", badges: 106 },
+                { rank: 7, name: "Abhi Shukla", badges: 103 },
+              ].map((entry, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className={`relative flex items-center gap-4 px-6 py-4 border transition-colors group overflow-hidden ${
+                    entry.rank === 1
+                      ? "border-[#FFBA08]/40 bg-[#FFBA08]/5"
+                      : entry.rank === 2
+                      ? "border-gray-400/30 bg-gray-400/5"
+                      : entry.rank === 3
+                      ? "border-[#CD7F32]/30 bg-[#CD7F32]/5"
+                      : "border-white/5 bg-black/20 hover:border-white/10"
+                  }`}
+                >
+                  {/* rank glow bar */}
+                  <div className={`absolute left-0 top-0 bottom-0 w-[2px] ${
+                    entry.rank === 1 ? "bg-[#FFBA08]" : entry.rank === 2 ? "bg-gray-400" : entry.rank === 3 ? "bg-[#CD7F32]" : "bg-white/10"
+                  }`}></div>
+
+                  {/* rank number */}
+                  <div className={`font-mono font-bold text-lg w-8 shrink-0 text-center ${
+                    entry.rank === 1 ? "text-[#FFBA08]" : entry.rank === 2 ? "text-gray-300" : entry.rank === 3 ? "text-[#CD7F32]" : "text-gray-600"
+                  }`}>
+                    #{entry.rank}
+                  </div>
+
+                  {/* medal */}
+                  <div className="text-xl shrink-0 w-7 text-center">
+                    {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : entry.rank === 3 ? "🥉" : ""}
+                  </div>
+
+                  {/* name */}
+                  <div className="flex-1 font-semibold text-white text-lg">{entry.name}</div>
+
+                  {/* badge count */}
+                  <div className="flex items-center gap-2 font-mono shrink-0">
+                    <span className={`text-2xl font-bold ${
+                      entry.rank === 1 ? "text-[#FFBA08]" : entry.rank === 2 ? "text-gray-300" : entry.rank === 3 ? "text-[#CD7F32]" : "text-white"
+                    }`}>{entry.badges}</span>
+                    <span className="text-xs text-gray-500 uppercase tracking-widest">badges</span>
+                  </div>
+
+                  {/* progress bar */}
+                  <div className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent w-full"></div>
+                  <div
+                    className={`absolute bottom-0 left-0 h-[2px] transition-all duration-1000 ${
+                      entry.rank === 1 ? "bg-[#FFBA08]" : entry.rank === 2 ? "bg-gray-400" : entry.rank === 3 ? "bg-[#CD7F32]" : "bg-[#0078D4]"
+                    }`}
+                    style={{ width: `${(entry.badges / 222) * 100}%` }}
+                  ></div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section id="team" className="py-24 px-6 border-t border-white/5 bg-black/30 relative">
+          <div className="absolute bottom-0 left-1/2 w-[600px] h-64 bg-[#0078D4] rounded-full blur-[200px] opacity-5 pointer-events-none -translate-x-1/2"></div>
+          <div className="container mx-auto max-w-5xl">
+            <div className="flex items-center gap-4 mb-16">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#00D4FF]"></div>
+              <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight text-white flex items-center gap-3">
+                <Users className="text-[#00D4FF]" />
+                CORE_TEAM
+              </h2>
+              <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#00D4FF]"></div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { name: "Aadeesh Jain", handle: "aadeesh.jain" },
+                { name: "Revansh Sharma", handle: "revansh.sharma" },
+                { name: "Anmol Singh", handle: "anmol.singh" },
+                { name: "Muskan Asati", handle: "muskan.asati" },
+              ].map((member, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group flex flex-col items-center text-center p-6 border border-white/5 hover:border-[#00D4FF]/30 bg-black/20 transition-all duration-300 relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#00D4FF]/0 to-[#00D4FF]/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  {/* Avatar */}
+                  <div className="relative w-20 h-20 mb-4">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#0078D4] to-[#00D4FF] flex items-center justify-center text-2xl font-bold text-white font-mono">
+                      {member.name.charAt(0)}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#00FF41] border-2 border-[#0a0a0f]"></div>
+                  </div>
+                  <h3 className="font-bold text-white text-lg mb-1 leading-tight">{member.name}</h3>
+                  <p className="font-mono text-xs text-[#00D4FF] mb-3">@{member.handle}</p>
+                  <span className="text-[10px] font-mono px-2 py-1 bg-[#0078D4]/10 border border-[#0078D4]/20 text-[#0078D4] tracking-widest uppercase">Core Member</span>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
