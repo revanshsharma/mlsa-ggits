@@ -445,7 +445,7 @@ function Home() {
               </p>
               
               <a
-                href="https://chat.whatsapp.com/JNUSLtMTSgR9ZaueKIEAvU?mode=gi_t"
+                href="https://chat.whatsapp.com/Hb6tPlQTpnyJbKttmrfIVx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-10 py-5 bg-white text-black font-bold font-mono hover:bg-gray-200 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.2)]"
