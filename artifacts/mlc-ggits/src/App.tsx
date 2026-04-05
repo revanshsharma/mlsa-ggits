@@ -290,7 +290,7 @@ function Home() {
                   
                   <div className="flex flex-wrap gap-4 font-mono text-sm mb-8 text-gray-300">
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
-                      <Calendar className="w-4 h-4 text-[#0078D4]" /> TBD
+                      <Calendar className="w-4 h-4 text-[#0078D4]" /> 11 April
                     </div>
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
                       <Users className="w-4 h-4 text-[#0078D4]" /> Limited Seats
@@ -308,15 +308,12 @@ function Home() {
                 </div>
 
                 <div className="w-full md:w-1/3 flex justify-center z-10">
-                  {/* Copilot Logo SVG Representation */}
-                  <div className="relative w-48 h-48 sm:w-64 sm:h-64">
-                    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_30px_rgba(110,64,201,0.5)]">
-                      <path d="M50 10 C30 10 15 25 15 45 C15 55 18 63 25 70 L25 85 C25 88 28 90 30 90 L40 85 C43 86 46 86 50 86 C70 86 85 71 85 51 C85 31 70 10 50 10 Z" fill="#1A1A24" stroke="#6E40C9" strokeWidth="2"/>
-                      <circle cx="35" cy="40" r="6" fill="#00D4FF" />
-                      <circle cx="65" cy="40" r="6" fill="#00D4FF" />
-                      <path d="M35 60 Q50 70 65 60" fill="none" stroke="#6E40C9" strokeWidth="3" strokeLinecap="round"/>
-                      <path d="M50 10 L50 -5 M30 15 L20 0 M70 15 L80 0" stroke="#6E40C9" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
+                  <div className="relative w-48 h-48 sm:w-64 sm:h-64 drop-shadow-[0_0_40px_rgba(110,64,201,0.6)]">
+                    <img
+                      src={`${import.meta.env.BASE_URL}copilot-logo.jpeg`}
+                      alt="GitHub Copilot"
+                      className="w-full h-full object-contain rounded-2xl"
+                    />
                   </div>
                 </div>
               </div>
@@ -447,9 +444,14 @@ function Home() {
                 Join the network. Get access to exclusive resources, mentorship, and a community of builders who speak your language.
               </p>
               
-              <button className="px-10 py-5 bg-white text-black font-bold font-mono hover:bg-gray-200 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+              <a
+                href="https://chat.whatsapp.com/JNUSLtMTSgR9ZaueKIEAvU?mode=gi_t"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-10 py-5 bg-white text-black font-bold font-mono hover:bg-gray-200 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+              >
                 &gt; sudo join_community
-              </button>
+              </a>
             </motion.div>
           </div>
         </section>
