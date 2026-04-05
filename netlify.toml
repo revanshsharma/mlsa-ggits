@@ -1,0 +1,12 @@
+[build]
+  command = "pnpm --filter @workspace/mlc-ggits build"
+  publish = "artifacts/mlc-ggits/dist/public"
+
+[build.environment]
+  BASE_PATH = "/"
+  PORT = "5173"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
