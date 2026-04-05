@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
-import { Terminal, Users, Calendar, Trophy, Code2, ArrowRight, Github, Linkedin, Twitter, ExternalLink, Activity } from "lucide-react";
+import { Terminal, Users, Calendar, Trophy, Code2, ArrowRight, Linkedin, Twitter, ExternalLink, Activity } from "lucide-react";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -476,10 +476,7 @@ function Home() {
             </div>
             
             <div className="flex gap-6">
-              <a href="#" className="text-gray-500 hover:text-white transition-colors">
-                <Github className="w-6 h-6" />
-              </a>
-              <a href="#" className="text-gray-500 hover:text-[#0078D4] transition-colors">
+              <a href="https://www.linkedin.com/company/ms-ggits/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#0078D4] transition-colors">
                 <Linkedin className="w-6 h-6" />
               </a>
               <a href="#" className="text-gray-500 hover:text-[#00D4FF] transition-colors">
