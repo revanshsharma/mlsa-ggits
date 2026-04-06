@@ -189,6 +189,158 @@ const Counter = ({
   );
 };
 
+const GallerySection = () => {
+  const [images, setImages] = useState<{ url: string; name: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fetchImages = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/gallery/images");
+      const data = await res.json() as { images: { url: string; name: string }[] };
+      setImages(data.images ?? []);
+    } catch {
+      setImages([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchImages(); }, []);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const res = await fetch("/api/gallery/upload-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contentType: file.type, fileName: file.name }),
+      });
+      const { uploadURL } = await res.json() as { uploadURL: string };
+      await fetch(uploadURL, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+      await fetchImages();
+    } catch {
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  return (
+    <section id="gallery" className="py-24 px-6 border-t border-white/5 relative">
+      <div className="absolute top-0 left-1/2 w-[600px] h-64 bg-[#6E40C9] rounded-full blur-[200px] opacity-5 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="container mx-auto max-w-6xl">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#6E40C9]"></div>
+          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight text-white">
+            EVENT_GALLERY
+          </h2>
+          <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#6E40C9]"></div>
+        </div>
+
+        <div className="flex items-center justify-between mb-10">
+          <p className="font-mono text-sm text-gray-500">// moments from the community</p>
+          <div className="flex items-center gap-3">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleUpload}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#6E40C9]/50 bg-[#6E40C9]/10 hover:bg-[#6E40C9]/20 text-[#00D4FF] font-mono text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {uploading ? (
+                <>
+                  <span className="w-3 h-3 border border-[#00D4FF]/40 border-t-[#00D4FF] rounded-full animate-spin"></span>
+                  UPLOADING...
+                </>
+              ) : (
+                <>+ UPLOAD_PHOTO</>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="aspect-square bg-white/5 animate-pulse rounded"></div>
+            ))}
+          </div>
+        ) : images.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 border border-dashed border-white/10 rounded">
+            <div className="font-mono text-gray-600 text-sm mb-4">// no images uploaded yet</div>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="px-6 py-3 border border-white/10 text-gray-400 font-mono text-sm hover:border-[#6E40C9]/50 hover:text-white transition-colors"
+            >
+              + Upload the first photo
+            </button>
+          </div>
+        ) : (
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+            {images.map((img, i) => (
+              <motion.div
+                key={img.name}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.04 }}
+                className="break-inside-avoid group relative overflow-hidden cursor-pointer rounded border border-white/5 hover:border-[#6E40C9]/40 transition-colors"
+                onClick={() => setLightbox(img.url)}
+              >
+                <img
+                  src={img.url}
+                  alt={`Event photo ${i + 1}`}
+                  className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                  <span className="font-mono text-xs text-gray-300">[ VIEW ]</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6 backdrop-blur-sm"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            className="absolute top-6 right-6 text-gray-400 hover:text-white font-mono text-sm"
+            onClick={() => setLightbox(null)}
+          >
+            [ CLOSE ]
+          </button>
+          <img
+            src={lightbox}
+            alt="Gallery"
+            className="max-w-full max-h-[90vh] object-contain rounded shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+    </section>
+  );
+};
+
 function Home() {
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
@@ -237,6 +389,12 @@ function Home() {
               className="text-[#00D4FF] hover:text-white transition-colors"
             >
               /certdrive
+            </a>
+            <a
+              href="#gallery"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              /gallery
             </a>
             <a
               href="#team"
@@ -726,6 +884,8 @@ function Home() {
             </div>
           </div>
         </section>
+
+        <GallerySection />
 
         {/* CTA Section */}
         <section id="join" className="py-32 px-6 relative overflow-hidden">
