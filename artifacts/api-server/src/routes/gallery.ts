@@ -8,7 +8,7 @@ const router = Router();
 const storage = new ObjectStorageService();
 
 const SIDECAR = "http://127.0.0.1:1106";
-const LOCAL_GALLERY_DIR = process.env.LOCAL_GALLERY_DIR || path.resolve(process.cwd(), ".local-gallery");
+const LOCAL_GALLERY_DIR = process.env.LOCAL_GALLERY_DIR || path.resolve("/tmp/gallery");
 
 function parseGCSPath(path: string): { bucketName: string; objectName: string } {
   if (!path.startsWith("/")) path = `/${path}`;
