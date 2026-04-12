@@ -18,11 +18,15 @@ function parseGCSPath(path: string): { bucketName: string; objectName: string } 
   return { bucketName, objectName };
 }
 
-function getGalleryParts(): { bucketName: string; prefix: string } {
-  const dir = storage.getPrivateObjectDir();
-  const { bucketName, objectName } = parseGCSPath(dir);
-  const prefix = objectName ? `${objectName}/gallery/` : "gallery/";
-  return { bucketName, prefix };
+function getGalleryParts(): { bucketName: string; prefix: string } | null {
+  try {
+    const dir = storage.getPrivateObjectDir();
+    const { bucketName, objectName } = parseGCSPath(dir);
+    const prefix = objectName ? `${objectName}/gallery/` : "gallery/";
+    return { bucketName, prefix };
+  } catch {
+    return null;
+  }
 }
 
 async function ensureLocalGalleryDir(): Promise<void> {
@@ -96,23 +100,29 @@ router.post("/gallery/upload-url", async (req, res) => {
     const fileName = body.fileName ?? "photo.jpg";
     const ext = safeExt(fileName);
     const objectId = randomUUID();
-    try {
-      const { bucketName, prefix } = getGalleryParts();
-      const objectName = `${prefix}${objectId}.${ext}`;
-      const uploadURL = await signUrl(bucketName, objectName, "PUT", 900);
-      const objectPath = `/objects/${bucketName}/${objectName}`;
-      res.json({ uploadURL, objectPath, contentType });
-      return;
-    } catch {
-      await ensureLocalGalleryDir();
-      const localName = `${objectId}.${ext}`;
-      const uploadURL = toAbsoluteApiUrl(req, `/api/gallery/local-upload/${localName}`);
-      res.json({
-        uploadURL,
-        objectPath: `/api/gallery/local/${localName}`,
-        contentType,
-      });
+    const galleryParts = getGalleryParts();
+    
+    if (galleryParts) {
+      try {
+        const { bucketName, prefix } = galleryParts;
+        const objectName = `${prefix}${objectId}.${ext}`;
+        const uploadURL = await signUrl(bucketName, objectName, "PUT", 900);
+        const objectPath = `/objects/${bucketName}/${objectName}`;
+        res.json({ uploadURL, objectPath, contentType });
+        return;
+      } catch (err) {
+        req.log.warn({ err }, "Object storage unavailable; falling back to local upload");
+      }
     }
+    
+    await ensureLocalGalleryDir();
+    const localName = `${objectId}.${ext}`;
+    const uploadURL = toAbsoluteApiUrl(req, `/api/gallery/local-upload/${localName}`);
+    res.json({
+      uploadURL,
+      objectPath: `/api/gallery/local/${localName}`,
+      contentType,
+    });
   } catch (err) {
     req.log.error({ err }, "Failed to generate gallery upload URL");
     res.status(500).json({ error: "Failed to generate upload URL" });
@@ -143,34 +153,39 @@ router.put(
       const ext = safeExt(fileNameHeader);
       const objectId = randomUUID();
 
-      try {
-        const { bucketName, prefix } = getGalleryParts();
-        const objectName = `${prefix}${objectId}.${ext}`;
-        const bucket = objectStorageClient.bucket(bucketName);
-        const file = bucket.file(objectName);
-        await file.save(data, {
-          contentType: contentTypeHeader,
-          resumable: false,
-        });
+      const galleryParts = getGalleryParts();
+      if (galleryParts) {
+        try {
+          const { bucketName, prefix } = galleryParts;
+          const objectName = `${prefix}${objectId}.${ext}`;
+          const bucket = objectStorageClient.bucket(bucketName);
+          const file = bucket.file(objectName);
+          await file.save(data, {
+            contentType: contentTypeHeader,
+            resumable: false,
+          });
 
-        res.status(200).json({
-          ok: true,
-          source: "object-storage",
-          objectPath: `/objects/${bucketName}/${objectName}`,
-        });
-        return;
-      } catch {
-        await ensureLocalGalleryDir();
-        const localName = `${objectId}.${ext}`;
-        const outputPath = path.join(LOCAL_GALLERY_DIR, localName);
-        await writeFile(outputPath, data);
-
-        res.status(200).json({
-          ok: true,
-          source: "local",
-          objectPath: `/api/gallery/local/${localName}`,
-        });
+          res.status(200).json({
+            ok: true,
+            source: "object-storage",
+            objectPath: `/objects/${bucketName}/${objectName}`,
+          });
+          return;
+        } catch (err) {
+          req.log.warn({ err }, "Object storage upload failed; falling back to local");
+        }
       }
+
+      await ensureLocalGalleryDir();
+      const localName = `${objectId}.${ext}`;
+      const outputPath = path.join(LOCAL_GALLERY_DIR, localName);
+      await writeFile(outputPath, data);
+
+      res.status(200).json({
+        ok: true,
+        source: "local",
+        objectPath: `/api/gallery/local/${localName}`,
+      });
     } catch (err) {
       req.log.error({ err }, "Failed to upload gallery image");
       res.status(500).json({ error: "Failed to upload image" });
@@ -226,7 +241,12 @@ router.get("/gallery/local/:fileName", async (req, res) => {
 
 router.get("/gallery/images", async (req, res) => {
   try {
-    const { bucketName, prefix } = getGalleryParts();
+    const galleryParts = getGalleryParts();
+    if (!galleryParts) {
+      throw new Error("Object storage not configured; using local fallback");
+    }
+    
+    const { bucketName, prefix } = galleryParts;
     const bucket = objectStorageClient.bucket(bucketName);
     const [files] = await bucket.getFiles({ prefix });
 
