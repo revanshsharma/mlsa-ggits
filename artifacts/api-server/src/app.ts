@@ -29,6 +29,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (_req, res) => {
+  res.json({
+    status: "ok",
+    service: "mlsa-ggits-api",
+    health: "/api/healthz",
+    gallery: "/api/gallery/images",
+  });
+});
+
 app.use("/api", router);
 
 export default app;
