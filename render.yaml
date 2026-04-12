@@ -9,6 +9,10 @@ services:
     startCommand: corepack pnpm start
     healthCheckPath: /api/healthz
     autoDeploy: true
+    disk:
+      name: gallery-data
+      mountPath: /var/data/gallery
+      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
@@ -17,4 +21,4 @@ services:
       - key: PUBLIC_OBJECT_SEARCH_PATHS
         sync: false
       - key: LOCAL_GALLERY_DIR
-        sync: false
+        value: /var/data/gallery
