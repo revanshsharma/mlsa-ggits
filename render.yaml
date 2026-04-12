@@ -4,9 +4,9 @@ services:
     runtime: node
     region: oregon
     plan: starter
-    rootDir: artifacts/api-server
-    buildCommand: corepack pnpm install --frozen-lockfile && corepack pnpm build
-    startCommand: corepack pnpm start
+    rootDir: .
+    buildCommand: corepack pnpm install --frozen-lockfile && corepack pnpm --filter @workspace/api-server build
+    startCommand: corepack pnpm --filter @workspace/api-server start
     healthCheckPath: /api/healthz
     autoDeploy: true
     disk:
