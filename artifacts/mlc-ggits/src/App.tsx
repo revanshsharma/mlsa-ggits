@@ -22,6 +22,9 @@ import {
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+
+const apiPath = (path: string) => `${API_BASE_URL}${path}`;
 
 // MATRIX EFFECT COMPONENT
 const MatrixRain = () => {
@@ -199,7 +202,7 @@ const GallerySection = () => {
   const fetchImages = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/gallery/images");
+      const res = await fetch(apiPath("/api/gallery/images"));
       const data = await res.json() as { images: { url: string; name: string }[] };
       setImages(data.images ?? []);
     } catch {
@@ -216,7 +219,7 @@ const GallerySection = () => {
     if (!file) return;
     setUploading(true);
     try {
-      const res = await fetch("/api/gallery/upload-url", {
+      const res = await fetch(apiPath("/api/gallery/upload-url"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contentType: file.type, fileName: file.name }),
