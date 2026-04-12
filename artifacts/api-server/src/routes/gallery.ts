@@ -125,7 +125,13 @@ router.put(
       const safeName = `${path.basename(rawName, path.extname(rawName))}.${ext}`;
       const outputPath = path.join(LOCAL_GALLERY_DIR, safeName);
       const body = req.body;
-      const data = Buffer.isBuffer(body) ? body : Buffer.from([]);
+      const data = Buffer.isBuffer(body)
+        ? body
+        : body instanceof Uint8Array
+          ? Buffer.from(body)
+          : typeof body === "string"
+            ? Buffer.from(body)
+            : Buffer.from([]);
       if (data.length === 0) {
         res.status(400).json({ error: "Empty upload body" });
         return;
