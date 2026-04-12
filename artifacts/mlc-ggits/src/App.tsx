@@ -20,9 +20,15 @@ import {
   Activity,
 } from "lucide-react";
 import NotFound from "@/pages/not-found";
+import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+const FALLBACK_GALLERY_IMAGES = [
+  { url: `${import.meta.env.BASE_URL}copilot-logo.jpeg`, name: "copilot-logo" },
+  { url: `${import.meta.env.BASE_URL}opengraph.jpg`, name: "opengraph" },
+  { url: communityPhoto, name: "community-photo" },
+];
 
 const apiPath = (path: string) => `${API_BASE_URL}${path}`;
 
@@ -199,20 +205,45 @@ const GallerySection = () => {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const fetchImages = async () => {
-    setLoading(true);
+  const fetchImages = async (showLoading = false) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const res = await fetch(apiPath("/api/gallery/images"));
       const data = await res.json() as { images: { url: string; name: string }[] };
-      setImages(data.images ?? []);
+      setImages(data.images?.length ? data.images : FALLBACK_GALLERY_IMAGES);
     } catch {
-      setImages([]);
+      setImages(FALLBACK_GALLERY_IMAGES);
     } finally {
-      setLoading(false);
+      if (showLoading) {
+        setLoading(false);
+      }
     }
   };
 
-  useEffect(() => { fetchImages(); }, []);
+  useEffect(() => {
+    void fetchImages(true);
+
+    const refresh = () => {
+      if (document.visibilityState === "visible") {
+        void fetchImages(false);
+      }
+    };
+
+    const intervalId = window.setInterval(() => {
+      void fetchImages(false);
+    }, 15_000);
+
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, []);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -230,7 +261,7 @@ const GallerySection = () => {
         headers: { "Content-Type": file.type },
         body: file,
       });
-      await fetchImages();
+      await fetchImages(false);
     } catch {
     } finally {
       setUploading(false);
