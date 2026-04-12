@@ -35,11 +35,16 @@ function safeExt(fileName: string): string {
 }
 
 function toAbsoluteApiUrl(req: Request, apiPath: string): string {
-  const protocol = (req.headers["x-forwarded-proto"] as string) || req.protocol;
   const host = req.get("host");
   if (!host) {
     return apiPath;
   }
+  const forwardedProto = req.headers["x-forwarded-proto"];
+  const forwardedProtocol = Array.isArray(forwardedProto)
+    ? forwardedProto[0]
+    : forwardedProto;
+  const isLocalHost = host.includes("localhost") || host.startsWith("127.0.0.1");
+  const protocol = forwardedProtocol || (isLocalHost ? "http" : "https");
   return `${protocol}://${host}${apiPath}`;
 }
 
