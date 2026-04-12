@@ -24,6 +24,8 @@ import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_177539
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+type GalleryImage = { url: string; name: string };
+const LOCAL_GALLERY_STORAGE_KEY = "mlc-ggits-local-gallery-images";
 const FALLBACK_GALLERY_IMAGES = [
   { url: `${import.meta.env.BASE_URL}copilot-logo.jpeg`, name: "copilot-logo" },
   { url: `${import.meta.env.BASE_URL}opengraph.jpg`, name: "opengraph" },
@@ -31,6 +33,34 @@ const FALLBACK_GALLERY_IMAGES = [
 ];
 
 const apiPath = (path: string) => `${API_BASE_URL}${path}`;
+
+const loadLocalGalleryImages = (): GalleryImage[] => {
+  try {
+    const raw = window.localStorage.getItem(LOCAL_GALLERY_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as GalleryImage[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item) => typeof item?.url === "string" && typeof item?.name === "string");
+  } catch {
+    return [];
+  }
+};
+
+const saveLocalGalleryImages = (images: GalleryImage[]) => {
+  try {
+    window.localStorage.setItem(LOCAL_GALLERY_STORAGE_KEY, JSON.stringify(images.slice(0, 20)));
+  } catch {
+    // Ignore localStorage quota errors and keep the in-memory gallery working.
+  }
+};
+
+const fileToDataURL = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : "");
+    reader.onerror = () => reject(new Error("Failed to read image file"));
+    reader.readAsDataURL(file);
+  });
 
 // MATRIX EFFECT COMPONENT
 const MatrixRain = () => {
@@ -199,9 +229,10 @@ const Counter = ({
 };
 
 const GallerySection = () => {
-  const [images, setImages] = useState<{ url: string; name: string }[]>([]);
+  const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -211,10 +242,21 @@ const GallerySection = () => {
     }
     try {
       const res = await fetch(apiPath("/api/gallery/images"));
-      const data = await res.json() as { images: { url: string; name: string }[] };
-      setImages(data.images?.length ? data.images : FALLBACK_GALLERY_IMAGES);
+      if (!res.ok) {
+        throw new Error(`Gallery fetch failed: ${res.status}`);
+      }
+      const data = await res.json() as { images: GalleryImage[] };
+      const localImages = loadLocalGalleryImages();
+      if (data.images?.length) {
+        setImages(data.images);
+      } else if (localImages.length) {
+        setImages(localImages);
+      } else {
+        setImages(FALLBACK_GALLERY_IMAGES);
+      }
     } catch {
-      setImages(FALLBACK_GALLERY_IMAGES);
+      const localImages = loadLocalGalleryImages();
+      setImages(localImages.length ? localImages : FALLBACK_GALLERY_IMAGES);
     } finally {
       if (showLoading) {
         setLoading(false);
@@ -249,20 +291,46 @@ const GallerySection = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    setUploadStatus(null);
     try {
       const res = await fetch(apiPath("/api/gallery/upload-url"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contentType: file.type, fileName: file.name }),
       });
-      const { uploadURL } = await res.json() as { uploadURL: string };
-      await fetch(uploadURL, {
+      if (!res.ok) {
+        throw new Error(`Upload URL request failed: ${res.status}`);
+      }
+      const { uploadURL } = await res.json() as { uploadURL?: string };
+      if (!uploadURL) {
+        throw new Error("Upload URL missing from API response");
+      }
+
+      const uploadRes = await fetch(uploadURL, {
         method: "PUT",
         headers: { "Content-Type": file.type },
         body: file,
       });
+      if (!uploadRes.ok) {
+        throw new Error(`Image upload failed: ${uploadRes.status}`);
+      }
+
+      setUploadStatus("Upload complete. Gallery will update shortly.");
       await fetchImages(false);
     } catch {
+      try {
+        const dataUrl = await fileToDataURL(file);
+        const localImage = {
+          url: dataUrl,
+          name: `local-${Date.now()}-${file.name}`,
+        };
+        const nextImages = [localImage, ...loadLocalGalleryImages()];
+        saveLocalGalleryImages(nextImages);
+        setImages(nextImages);
+        setUploadStatus("API upload failed. Saved locally in this browser.");
+      } catch {
+        setUploadStatus("Upload failed. Could not save image locally.");
+      }
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -307,6 +375,12 @@ const GallerySection = () => {
             </button>
           </div>
         </div>
+
+        {uploadStatus && (
+          <div className="mb-6 text-xs font-mono text-[#00D4FF] border border-[#00D4FF]/30 bg-[#00D4FF]/5 rounded px-3 py-2">
+            {uploadStatus}
+          </div>
+        )}
 
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
