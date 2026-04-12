@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: mlsa-ggits-api
+    runtime: node
+    region: oregon
+    plan: starter
+    rootDir: artifacts/api-server
+    buildCommand: corepack pnpm install --frozen-lockfile && corepack pnpm build
+    startCommand: corepack pnpm start
+    healthCheckPath: /api/healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PRIVATE_OBJECT_DIR
+        sync: false
+      - key: PUBLIC_OBJECT_SEARCH_PATHS
+        sync: false
+      - key: LOCAL_GALLERY_DIR
+        sync: false
