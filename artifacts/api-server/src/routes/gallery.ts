@@ -30,7 +30,16 @@ function getGalleryParts(): { bucketName: string; prefix: string } | null {
 }
 
 async function ensureLocalGalleryDir(): Promise<void> {
-  await mkdir(LOCAL_GALLERY_DIR, { recursive: true });
+  try {
+    await mkdir(LOCAL_GALLERY_DIR, { recursive: true });
+  } catch (err) {
+    const error = err as NodeJS.ErrnoException;
+    if (error.code === "EACCES") {
+      console.warn(`Permission denied accessing ${LOCAL_GALLERY_DIR}. Local gallery will be unavailable.`);
+      throw new Error(`LOCAL_GALLERY_DIR not writable: ${LOCAL_GALLERY_DIR}`);
+    }
+    throw err;
+  }
 }
 
 function safeExt(fileName: string): string {
