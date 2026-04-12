@@ -115,6 +115,65 @@ router.post("/gallery/upload-url", async (req, res) => {
 });
 
 router.put(
+  "/gallery/upload",
+  express.raw({ type: "*/*", limit: "20mb" }),
+  async (req, res) => {
+    try {
+      const body = req.body;
+      const data = Buffer.isBuffer(body)
+        ? body
+        : body instanceof Uint8Array
+          ? Buffer.from(body)
+          : typeof body === "string"
+            ? Buffer.from(body)
+            : Buffer.from([]);
+
+      if (data.length === 0) {
+        res.status(400).json({ error: "Empty upload body" });
+        return;
+      }
+
+      const fileNameHeader = req.header("x-file-name") || "photo.jpg";
+      const contentTypeHeader = req.header("content-type") || "image/jpeg";
+      const ext = safeExt(fileNameHeader);
+      const objectId = randomUUID();
+
+      try {
+        const { bucketName, prefix } = getGalleryParts();
+        const objectName = `${prefix}${objectId}.${ext}`;
+        const bucket = objectStorageClient.bucket(bucketName);
+        const file = bucket.file(objectName);
+        await file.save(data, {
+          contentType: contentTypeHeader,
+          resumable: false,
+        });
+
+        res.status(200).json({
+          ok: true,
+          source: "object-storage",
+          objectPath: `/objects/${bucketName}/${objectName}`,
+        });
+        return;
+      } catch {
+        await ensureLocalGalleryDir();
+        const localName = `${objectId}.${ext}`;
+        const outputPath = path.join(LOCAL_GALLERY_DIR, localName);
+        await writeFile(outputPath, data);
+
+        res.status(200).json({
+          ok: true,
+          source: "local",
+          objectPath: `/api/gallery/local/${localName}`,
+        });
+      }
+    } catch (err) {
+      req.log.error({ err }, "Failed to upload gallery image");
+      res.status(500).json({ error: "Failed to upload image" });
+    }
+  }
+);
+
+router.put(
   "/gallery/local-upload/:fileName",
   express.raw({ type: "*/*", limit: "20mb" }),
   async (req, res) => {

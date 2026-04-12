@@ -293,22 +293,12 @@ const GallerySection = () => {
     setUploading(true);
     setUploadStatus(null);
     try {
-      const res = await fetch(apiPath("/api/gallery/upload-url"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contentType: file.type, fileName: file.name }),
-      });
-      if (!res.ok) {
-        throw new Error(`Upload URL request failed: ${res.status}`);
-      }
-      const { uploadURL } = await res.json() as { uploadURL?: string };
-      if (!uploadURL) {
-        throw new Error("Upload URL missing from API response");
-      }
-
-      const uploadRes = await fetch(uploadURL, {
+      const uploadRes = await fetch(apiPath("/api/gallery/upload"), {
         method: "PUT",
-        headers: { "Content-Type": file.type },
+        headers: {
+          "Content-Type": file.type || "application/octet-stream",
+          "X-File-Name": file.name,
+        },
         body: file,
       });
       if (!uploadRes.ok) {
