@@ -24,6 +24,7 @@ import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_177539
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+const HAS_API_BACKEND = API_BASE_URL.length > 0;
 type GalleryImage = { url: string; name: string };
 const LOCAL_GALLERY_STORAGE_KEY = "mlc-ggits-local-gallery-images";
 const FALLBACK_GALLERY_IMAGES = [
@@ -241,6 +242,12 @@ const GallerySection = () => {
       setLoading(true);
     }
     try {
+      if (!HAS_API_BACKEND) {
+        const localImages = loadLocalGalleryImages();
+        setImages(localImages.length ? localImages : FALLBACK_GALLERY_IMAGES);
+        return;
+      }
+
       const res = await fetch(apiPath("/api/gallery/images"));
       if (!res.ok) {
         throw new Error(`Gallery fetch failed: ${res.status}`);
@@ -293,20 +300,33 @@ const GallerySection = () => {
     setUploading(true);
     setUploadStatus(null);
     try {
-      const uploadRes = await fetch(apiPath("/api/gallery/upload"), {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type || "application/octet-stream",
-          "X-File-Name": file.name,
-        },
-        body: file,
-      });
-      if (!uploadRes.ok) {
-        throw new Error(`Image upload failed: ${uploadRes.status}`);
+      if (HAS_API_BACKEND) {
+        const uploadRes = await fetch(apiPath("/api/gallery/upload"), {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type || "application/octet-stream",
+            "X-File-Name": file.name,
+          },
+          body: file,
+        });
+        if (!uploadRes.ok) {
+          throw new Error(`Image upload failed: ${uploadRes.status}`);
+        }
+
+        setUploadStatus("Upload complete. Gallery will update shortly.");
+        await fetchImages(false);
+        return;
       }
 
-      setUploadStatus("Upload complete. Gallery will update shortly.");
-      await fetchImages(false);
+      const dataUrl = await fileToDataURL(file);
+      const localImage = {
+        url: dataUrl,
+        name: `local-${Date.now()}-${file.name}`,
+      };
+      const nextImages = [localImage, ...loadLocalGalleryImages()];
+      saveLocalGalleryImages(nextImages);
+      setImages(nextImages);
+      setUploadStatus("Saved locally in this browser.");
     } catch {
       try {
         const dataUrl = await fileToDataURL(file);
@@ -317,7 +337,11 @@ const GallerySection = () => {
         const nextImages = [localImage, ...loadLocalGalleryImages()];
         saveLocalGalleryImages(nextImages);
         setImages(nextImages);
-        setUploadStatus("API upload failed. Saved locally in this browser.");
+        setUploadStatus(
+          HAS_API_BACKEND
+            ? "API upload failed. Saved locally in this browser."
+            : "Saved locally in this browser.",
+        );
       } catch {
         setUploadStatus("Upload failed. Could not save image locally.");
       }
@@ -372,29 +396,17 @@ const GallerySection = () => {
           </div>
         )}
 
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="aspect-square bg-white/5 animate-pulse rounded"></div>
-            ))}
-          </div>
-        ) : images.length === 0 ? (
+        {images.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 border border-dashed border-white/10 rounded">
-            <div className="font-mono text-gray-600 text-sm mb-4">// no images uploaded yet</div>
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="px-6 py-3 border border-white/10 text-gray-400 font-mono text-sm hover:border-[#6E40C9]/50 hover:text-white transition-colors"
-            >
-              + Upload the first photo
-            </button>
+            <p className="font-mono text-gray-500">NO_IMAGES_YET</p>
           </div>
         ) : (
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 [column-fill:_balance]">
             {images.map((img, i) => (
               <motion.div
-                key={img.name}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                key={`${img.url}-${i}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.04 }}
                 className="break-inside-avoid group relative overflow-hidden cursor-pointer rounded border border-white/5 hover:border-[#6E40C9]/40 transition-colors"
