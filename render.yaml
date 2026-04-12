@@ -4,7 +4,6 @@ services:
     runtime: node
     region: oregon
     plan: starter
-    rootDir: .
     buildCommand: corepack pnpm install --frozen-lockfile && corepack pnpm --filter @workspace/api-server build
     startCommand: corepack pnpm --filter @workspace/api-server start
     healthCheckPath: /api/healthz
