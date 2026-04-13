@@ -8,16 +8,18 @@ services:
     startCommand: corepack pnpm --filter @workspace/api-server start
     healthCheckPath: /api/healthz
     autoDeploy: true
-    disk:
-      name: gallery-data
-      mountPath: /var/data/gallery
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: CLOUDINARY_FOLDER
+        value: mlsa-ggits/gallery
       - key: PRIVATE_OBJECT_DIR
         sync: false
       - key: PUBLIC_OBJECT_SEARCH_PATHS
         sync: false
-      - key: LOCAL_GALLERY_DIR
-        value: /var/data/gallery

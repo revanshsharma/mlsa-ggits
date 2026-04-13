@@ -1,6 +1,6 @@
 import express, { Router, type Request } from "express";
 import { ObjectStorageService, objectStorageClient } from "../lib/objectStorage";
-import { randomUUID } from "crypto";
+import { createHash, randomUUID } from "crypto";
 import path from "path";
 import { mkdir, readdir, stat, writeFile } from "fs/promises";
 
@@ -9,6 +9,144 @@ const storage = new ObjectStorageService();
 
 const SIDECAR = "http://127.0.0.1:1106";
 const LOCAL_GALLERY_DIR = process.env.LOCAL_GALLERY_DIR || path.resolve("/tmp/gallery");
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "";
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || "";
+const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || "";
+const CLOUDINARY_FOLDER = (process.env.CLOUDINARY_FOLDER || "mlsa-ggits/gallery").replace(/^\/+|\/+$/g, "");
+
+function getCloudinaryConfig(): { cloudName: string; apiKey: string; apiSecret: string; folder: string } | null {
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+    return null;
+  }
+  return {
+    cloudName: CLOUDINARY_CLOUD_NAME,
+    apiKey: CLOUDINARY_API_KEY,
+    apiSecret: CLOUDINARY_API_SECRET,
+    folder: CLOUDINARY_FOLDER,
+  };
+}
+
+function signCloudinaryParams(params: Record<string, string | number>, apiSecret: string): string {
+  const raw = Object.keys(params)
+    .sort()
+    .map((key) => `${key}=${params[key]}`)
+    .join("&");
+  return createHash("sha1").update(`${raw}${apiSecret}`).digest("hex");
+}
+
+async function uploadToCloudinary(data: Buffer, contentType: string, fileName: string) {
+  const config = getCloudinaryConfig();
+  if (!config) {
+    throw new Error("Cloudinary not configured");
+  }
+
+  const ext = safeExt(fileName);
+  const timestamp = Math.floor(Date.now() / 1000);
+  const publicId = `${config.folder}/${randomUUID()}.${ext}`;
+  const signature = signCloudinaryParams(
+    {
+      folder: config.folder,
+      public_id: publicId,
+      timestamp,
+    },
+    config.apiSecret
+  );
+
+  const fileDataUri = `data:${contentType};base64,${data.toString("base64")}`;
+  const body = new URLSearchParams({
+    api_key: config.apiKey,
+    file: fileDataUri,
+    folder: config.folder,
+    public_id: publicId,
+    timestamp: String(timestamp),
+    signature,
+  });
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${config.cloudName}/image/upload`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+    signal: AbortSignal.timeout(30_000),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Cloudinary upload failed: ${response.status} ${errorBody}`);
+  }
+
+  const payload = (await response.json()) as {
+    public_id?: string;
+    secure_url?: string;
+    created_at?: string;
+  };
+
+  if (!payload.secure_url || !payload.public_id) {
+    throw new Error("Cloudinary upload response missing required fields");
+  }
+
+  return {
+    objectPath: payload.public_id,
+    updatedAt: payload.created_at ?? new Date().toISOString(),
+    url: payload.secure_url,
+  };
+}
+
+async function listCloudinaryImages() {
+  const config = getCloudinaryConfig();
+  if (!config) {
+    throw new Error("Cloudinary not configured");
+  }
+
+  const auth = Buffer.from(`${config.apiKey}:${config.apiSecret}`).toString("base64");
+  const prefix = `${config.folder}/`;
+  const endpoint = new URL(`https://api.cloudinary.com/v1_1/${config.cloudName}/resources/image/upload`);
+  endpoint.searchParams.set("prefix", prefix);
+  endpoint.searchParams.set("max_results", "100");
+
+  const response = await fetch(endpoint, {
+    headers: {
+      Authorization: `Basic ${auth}`,
+    },
+    signal: AbortSignal.timeout(30_000),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Cloudinary list failed: ${response.status} ${errorBody}`);
+  }
+
+  const payload = (await response.json()) as {
+    resources?: Array<{
+      public_id?: string;
+      secure_url?: string;
+      created_at?: string;
+      format?: string;
+    }>;
+  };
+
+  const images = (payload.resources ?? [])
+    .filter((resource) => Boolean(resource.secure_url && resource.public_id))
+    .map((resource) => {
+      const publicId = resource.public_id ?? "";
+      const baseName = publicId.split("/").pop() ?? publicId;
+      const ext = resource.format ? `.${resource.format}` : "";
+      return {
+        name: `${baseName}${ext}`,
+        updatedAt: resource.created_at ?? "",
+        url: resource.secure_url as string,
+      };
+    });
+
+  images.sort((a, b) => {
+    const aDate = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+    const bDate = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+    return bDate - aDate;
+  });
+
+  return images;
+}
 
 function parseGCSPath(path: string): { bucketName: string; objectName: string } {
   if (!path.startsWith("/")) path = `/${path}`;
@@ -106,6 +244,12 @@ router.post("/gallery/upload-url", async (req, res) => {
   try {
     const body = req.body as { contentType?: string; fileName?: string };
     const contentType = body.contentType ?? "image/jpeg";
+    if (getCloudinaryConfig()) {
+      const uploadURL = toAbsoluteApiUrl(req, "/api/gallery/upload");
+      res.json({ uploadURL, objectPath: "cloudinary", contentType });
+      return;
+    }
+
     const fileName = body.fileName ?? "photo.jpg";
     const ext = safeExt(fileName);
     const objectId = randomUUID();
@@ -161,6 +305,22 @@ router.put(
       const contentTypeHeader = req.header("content-type") || "image/jpeg";
       const ext = safeExt(fileNameHeader);
       const objectId = randomUUID();
+
+      if (getCloudinaryConfig()) {
+        try {
+          const result = await uploadToCloudinary(data, contentTypeHeader, fileNameHeader);
+          res.status(200).json({
+            ok: true,
+            source: "cloudinary",
+            objectPath: result.objectPath,
+            url: result.url,
+            updatedAt: result.updatedAt,
+          });
+          return;
+        } catch (err) {
+          req.log.warn({ err }, "Cloudinary upload failed; trying object storage fallback");
+        }
+      }
 
       const galleryParts = getGalleryParts();
       if (galleryParts) {
@@ -249,10 +409,22 @@ router.get("/gallery/local/:fileName", async (req, res) => {
 });
 
 router.get("/gallery/images", async (req, res) => {
+  if (getCloudinaryConfig()) {
+    try {
+      const images = await listCloudinaryImages();
+      res.json({ images });
+      return;
+    } catch (err) {
+      req.log.warn({ err }, "Cloudinary unavailable for gallery; trying other backends");
+    }
+  }
+
   try {
     const galleryParts = getGalleryParts();
     if (!galleryParts) {
-      throw new Error("Object storage not configured; using local fallback");
+      const images = await listLocalGalleryImages(req);
+      res.status(200).json({ images });
+      return;
     }
     
     const { bucketName, prefix } = galleryParts;
