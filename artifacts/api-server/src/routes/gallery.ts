@@ -42,7 +42,7 @@ async function uploadToCloudinary(data: Buffer, contentType: string, fileName: s
 
   const ext = safeExt(fileName);
   const timestamp = Math.floor(Date.now() / 1000);
-  const publicId = `${config.folder}/${randomUUID()}.${ext}`;
+  const publicId = `${randomUUID()}.${ext}`;
   const signature = signCloudinaryParams(
     {
       folder: config.folder,
@@ -132,8 +132,9 @@ async function listCloudinaryImages() {
       const publicId = resource.public_id ?? "";
       const baseName = publicId.split("/").pop() ?? publicId;
       const ext = resource.format ? `.${resource.format}` : "";
+      const hasExt = ext ? baseName.toLowerCase().endsWith(ext.toLowerCase()) : false;
       return {
-        name: `${baseName}${ext}`,
+        name: hasExt ? baseName : `${baseName}${ext}`,
         updatedAt: resource.created_at ?? "",
         url: resource.secure_url as string,
       };
