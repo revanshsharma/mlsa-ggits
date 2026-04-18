@@ -712,7 +712,7 @@ function Home() {
                   potential.
                 </h2>
                 <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                  Microsoft Learn Community at GGITS is an elite hub for
+                  Microsoft Campus Club at GGITS is an elite hub for
                   developers, tinkerers, and tech enthusiasts. We bridge the gap
                   between academic theory and bleeding-edge industry practice.
                 </p>
@@ -1041,7 +1041,7 @@ function Home() {
               </div>
               <div className="flex flex-col">
                 <span className="font-bold leading-none">
-                  Microsoft Learn Community
+                  Microsoft Campus Club
                 </span>
                 <span className="font-mono text-xs text-gray-500">
                   GGITS Jabalpur
@@ -1063,7 +1063,7 @@ function Home() {
 
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600 font-mono">
             <p>
-              © {new Date().getFullYear()} Microsoft Learn Community GGITS. All
+              © {new Date().getFullYear()} Microsoft Campus Club GGITS. All
               systems operational.
             </p>
             <p className="flex items-center gap-2">
