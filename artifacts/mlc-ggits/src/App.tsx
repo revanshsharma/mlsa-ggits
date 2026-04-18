@@ -464,7 +464,7 @@ function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* Microsoft Learn Logo */}
+            {/* Microsoft Campus Club Logo */}
             <div className="flex gap-1 shrink-0">
               <div className="grid grid-cols-2 gap-[2px]">
                 <div className="w-3 h-3 bg-[#F35325]"></div>
@@ -474,7 +474,7 @@ function Home() {
               </div>
             </div>
             <span className="font-semibold text-lg hidden sm:block">
-              Microsoft Learn
+              Microsoft Campus Club
             </span>
             <span className="text-gray-500 hidden sm:block">|</span>
             <span className="font-mono font-bold text-[#00D4FF] tracking-tight">
@@ -547,7 +547,7 @@ function Home() {
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-4">
-              Microsoft Learn <br />
+              Microsoft Campus Club <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] via-[#00D4FF] to-[#00FF41]">
                 Community
               </span>
@@ -829,7 +829,7 @@ function Home() {
               </h2>
 
               <p className="text-gray-400 text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
-                Level up your credentials. Complete Microsoft Learn paths, earn badges, and get officially certified — all in April.
+                Level up your credentials. Complete Microsoft Campus Club paths, earn badges, and get officially certified — all in April.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 font-mono text-sm text-gray-400 mb-10">
