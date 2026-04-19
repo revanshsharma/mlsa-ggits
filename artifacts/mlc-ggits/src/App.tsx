@@ -162,7 +162,7 @@ const TypewriterText = () => {
   }, [displayedText, isDeleting, currentMessageIndex, messages]);
 
   return (
-    <div className="font-mono text-xl md:text-3xl text-[#00FF41] mt-6 flex items-center justify-center">
+    <div className="font-mono text-base sm:text-xl md:text-3xl text-[#00FF41] mt-6 px-4 flex items-center justify-center text-center min-h-[2.5rem]">
       <span>{displayedText}</span>
       <span className="cursor-blink ml-1 w-3 h-8 bg-[#00FF41] inline-block"></span>
     </div>
@@ -352,7 +352,7 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="py-24 px-6 border-t border-white/5 relative">
+    <section id="gallery" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative">
       <div className="absolute top-0 left-1/2 w-[600px] h-64 bg-[#6E40C9] rounded-full blur-[200px] opacity-5 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
       <div className="container mx-auto max-w-6xl">
         <div className="flex items-center gap-4 mb-4">
@@ -363,7 +363,7 @@ const GallerySection = () => {
           <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#6E40C9]"></div>
         </div>
 
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <p className="font-mono text-sm text-gray-500">// moments from the community</p>
           <div className="flex items-center gap-3">
             <input
@@ -401,7 +401,7 @@ const GallerySection = () => {
             <p className="font-mono text-gray-500">NO_IMAGES_YET</p>
           </div>
         ) : (
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 [column-fill:_balance]">
+          <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3 [column-fill:_balance]">
             {images.map((img, i) => (
               <motion.div
                 key={`${img.url}-${i}`}
@@ -453,7 +453,7 @@ const GallerySection = () => {
 
 function Home() {
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-[#0078D4] selection:text-white relative overflow-hidden">
@@ -462,7 +462,7 @@ function Home() {
 
       {/* Navigation / Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             {/* Microsoft Campus Club Logo */}
             <div className="flex gap-1 shrink-0">
@@ -481,7 +481,7 @@ function Home() {
               GGITS
             </span>
           </div>
-          <nav className="flex gap-6 font-mono text-sm">
+          <nav className="w-full sm:w-auto flex gap-4 sm:gap-6 font-mono text-xs sm:text-sm overflow-x-auto whitespace-nowrap pb-1 sm:pb-0">
             <a
               href="#events"
               className="text-gray-300 hover:text-white transition-colors"
@@ -523,9 +523,9 @@ function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 pt-24">
+      <main className="relative z-10 pt-36 sm:pt-24">
         {/* Hero Section */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center py-20">
+        <section className="relative min-h-[85vh] sm:min-h-[90vh] flex flex-col items-center justify-center px-4 sm:px-6 text-center py-16 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -546,14 +546,14 @@ function Home() {
               STATUS: ONLINE & READY
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-4">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-4 leading-tight">
               Microsoft Campus <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] via-[#00D4FF] to-[#00FF41]">
                 Club
               </span>
             </h1>
 
-            <h2 className="text-2xl md:text-3xl font-mono text-gray-400 mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-mono text-gray-400 mb-10 sm:mb-12">
               GGITS <span className="text-gray-600">_</span> Jabalpur
             </h2>
 
@@ -589,7 +589,7 @@ function Home() {
         {/* Events Section */}
         <section
           id="events"
-          className="py-24 px-6 bg-black/40 border-y border-white/5 relative"
+          className="py-20 md:py-24 px-4 sm:px-6 bg-black/40 border-y border-white/5 relative"
         >
           <div className="container mx-auto max-w-6xl">
             <div className="flex items-center gap-4 mb-16">
@@ -694,7 +694,7 @@ function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="py-24 px-6 relative">
+        <section id="about" className="py-20 md:py-24 px-4 sm:px-6 relative">
           <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#0078D4] rounded-full blur-[200px] opacity-10 pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
 
           <div className="container mx-auto max-w-5xl">
@@ -801,7 +801,7 @@ function Home() {
         </section>
 
         {/* April Certification Drive Section */}
-        <section id="certdrive" className="py-24 px-6 border-t border-white/5 relative overflow-hidden">
+        <section id="certdrive" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative overflow-hidden">
           {/* Background glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0078D4]/10 via-transparent to-[#00FF41]/5 pointer-events-none"></div>
           <div className="absolute top-1/2 left-1/2 w-[700px] h-[300px] bg-[#0078D4] rounded-full blur-[180px] opacity-10 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
@@ -820,7 +820,7 @@ function Home() {
                 REGISTRATION_OPEN
               </div>
 
-              <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
                 April{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] to-[#00D4FF]">
                   Certification
@@ -860,7 +860,7 @@ function Home() {
         </section>
 
         {/* Stats Section */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black/20">
+        <section className="py-20 px-4 sm:px-6 border-t border-white/5 bg-black/20">
           <div className="container mx-auto max-w-3xl">
             <div className="grid grid-cols-2 gap-6 md:gap-10">
               <Counter end={500} label="Active Members" icon={Users} />
@@ -870,7 +870,7 @@ function Home() {
         </section>
 
         {/* Leaderboard Section */}
-        <section className="py-24 px-6 border-t border-white/5 relative">
+        <section className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative">
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFBA08] rounded-full blur-[200px] opacity-5 pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
           <div className="container mx-auto max-w-3xl">
             <div className="flex items-center gap-4 mb-12">
@@ -898,7 +898,7 @@ function Home() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07 }}
-                  className={`relative flex items-center gap-4 px-6 py-4 border transition-colors group overflow-hidden ${
+                  className={`relative flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 border transition-colors group overflow-hidden ${
                     entry.rank === 1
                       ? "border-[#FFBA08]/40 bg-[#FFBA08]/5"
                       : entry.rank === 2
@@ -926,10 +926,10 @@ function Home() {
                   </div>
 
                   {/* name */}
-                  <div className="flex-1 font-semibold text-white text-lg">{entry.name}</div>
+                  <div className="flex-1 min-w-[140px] font-semibold text-white text-base sm:text-lg">{entry.name}</div>
 
                   {/* badge count */}
-                  <div className="flex items-center gap-2 font-mono shrink-0">
+                  <div className="flex items-center gap-2 font-mono shrink-0 ml-auto">
                     <span className={`text-2xl font-bold ${
                       entry.rank === 1 ? "text-[#FFBA08]" : entry.rank === 2 ? "text-gray-300" : entry.rank === 3 ? "text-[#CD7F32]" : "text-white"
                     }`}>{entry.badges}</span>
@@ -951,7 +951,7 @@ function Home() {
         </section>
 
         {/* Team Section */}
-        <section id="team" className="py-24 px-6 border-t border-white/5 bg-black/30 relative">
+        <section id="team" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 bg-black/30 relative">
           <div className="absolute bottom-0 left-1/2 w-[600px] h-64 bg-[#0078D4] rounded-full blur-[200px] opacity-5 pointer-events-none -translate-x-1/2"></div>
           <div className="container mx-auto max-w-5xl">
             <div className="flex items-center gap-4 mb-16">
@@ -963,7 +963,7 @@ function Home() {
               <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#00D4FF]"></div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { name: "Aadeesh Jain", handle: "aadeesh.jain" },
                 { name: "Revansh Sharma", handle: "revansh.sharma" },
@@ -998,7 +998,7 @@ function Home() {
         <GallerySection />
 
         {/* CTA Section */}
-        <section id="join" className="py-32 px-6 relative overflow-hidden">
+        <section id="join" className="py-24 md:py-32 px-4 sm:px-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0078D4]/10 pointer-events-none"></div>
 
           <div className="container mx-auto max-w-4xl text-center relative z-10">
@@ -1029,7 +1029,7 @@ function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-black py-12 px-6 relative z-10">
+      <footer className="border-t border-white/10 bg-black py-12 px-4 sm:px-6 relative z-10">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-3">
