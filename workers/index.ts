@@ -6,8 +6,8 @@ export default {
       return Response.json({ ok: true, service: "mlc-ggits-worker" });
     }
 
-    return new Response("mlc-ggits worker is running", {
-      status: 200,
+    return new Response("Not found", {
+      status: 404,
       headers: { "content-type": "text/plain; charset=utf-8" },
     });
   },
