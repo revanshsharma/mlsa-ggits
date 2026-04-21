@@ -1,7 +1,0 @@
-{
-  "name": "mlsa-ggits",
-  "compatibility_date": "2026-04-12",
-  "assets": {
-    "directory": "artifacts/mlc-ggits/dist/public"
-  }
-}
