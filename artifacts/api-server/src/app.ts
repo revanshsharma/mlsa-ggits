@@ -37,6 +37,7 @@ app.get("/", (_req, res) => {
     service: "mlsa-ggits-api",
     health: "/api/healthz",
     gallery: "/api/gallery/images",
+    certificateVerify: "/api/certificates/verify?id=<certificate_id>",
   });
 });
 

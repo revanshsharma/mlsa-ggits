@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "source": "artifacts/api-server",
+    "runtime": "nodejs22",
+    "predeploy": [
+      "corepack pnpm --filter @workspace/api-server build"
+    ]
+  }
+}

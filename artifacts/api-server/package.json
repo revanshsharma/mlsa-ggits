@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "dist/firebase.mjs",
   "scripts": {
     "dev": "export NODE_ENV=development && pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
+    "build:firebase": "pnpm run build",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -17,6 +19,8 @@
     "cors": "^2",
     "drizzle-orm": "catalog:",
     "express": "^5",
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.0.1",
     "google-auth-library": "^10.6.2",
     "pino": "^9",
     "pino-http": "^10"
