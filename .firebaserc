@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "YOUR_FIREBASE_PROJECT_ID"
-  }
+    "apis": "api-mlsa"
+  },
+  "targets": {},
+  "etags": {}
 }

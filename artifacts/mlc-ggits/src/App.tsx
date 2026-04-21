@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
+import { verifyCertificateById, type VerifiedCertificate } from "@/lib/certificates";
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
@@ -62,6 +63,68 @@ const fileToDataURL = (file: File) =>
     reader.onerror = () => reject(new Error("Failed to read image file"));
     reader.readAsDataURL(file);
   });
+
+const CertificateVerifier = () => {
+  const [certificateId, setCertificateId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<{ valid: boolean; data?: VerifiedCertificate } | null>(null);
+
+  const onVerify = async () => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const verification = await verifyCertificateById(certificateId);
+      setResult(verification);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Verification failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="mt-12 mx-auto max-w-2xl border border-[#00D4FF]/20 bg-black/40 backdrop-blur-sm p-5 sm:p-6 text-left">
+      <p className="font-mono text-xs text-[#00D4FF] mb-3">// CERTIFICATE_VERIFY</p>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="text"
+          value={certificateId}
+          onChange={(e) => setCertificateId(e.target.value)}
+          placeholder="Enter certificate ID (e.g. CERT-001)"
+          className="flex-1 px-4 py-3 bg-black border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#00D4FF]/50 font-mono text-sm"
+        />
+        <button
+          onClick={() => void onVerify()}
+          disabled={loading}
+          className="px-5 py-3 bg-[#00D4FF]/10 border border-[#00D4FF]/40 text-[#00D4FF] font-mono text-sm hover:bg-[#00D4FF]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? "VERIFYING..." : "VERIFY"}
+        </button>
+      </div>
+
+      {error && (
+        <p className="mt-4 text-sm font-mono text-red-400">{error}</p>
+      )}
+
+      {result && result.valid && result.data && (
+        <div className="mt-4 border border-[#00FF41]/30 bg-[#00FF41]/5 p-4">
+          <p className="font-mono text-sm text-[#00FF41] mb-2">VALID CERTIFICATE</p>
+          <p className="text-sm text-gray-200"><span className="text-gray-400">Name:</span> {result.data.name}</p>
+          <p className="text-sm text-gray-200"><span className="text-gray-400">Course:</span> {result.data.course}</p>
+          <p className="text-sm text-gray-200"><span className="text-gray-400">Date:</span> {result.data.date}</p>
+        </div>
+      )}
+
+      {result && !result.valid && (
+        <div className="mt-4 border border-red-400/30 bg-red-400/5 p-4">
+          <p className="font-mono text-sm text-red-300">INVALID CERTIFICATE ID</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // MATRIX EFFECT COMPONENT
 const MatrixRain = () => {
@@ -855,6 +918,8 @@ function Home() {
                   REGISTER_NOW <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </a>
+
+              <CertificateVerifier />
             </motion.div>
           </div>
         </section>
