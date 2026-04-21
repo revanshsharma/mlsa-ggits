@@ -6,8 +6,8 @@
   "scripts": {
     "preinstall": "node -e \"const fs=require('node:fs'); for (const file of ['package-lock.json','yarn.lock']) { try { fs.rmSync(file, { force: true }); } catch {} } if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Use pnpm instead'); process.exit(1); }\"",
     "build": "corepack pnpm run typecheck && corepack pnpm -r --if-present run build",
-    "deploy:worker": "wrangler deploy --config wrangler.worker.toml",
-    "check:worker": "wrangler deploy --dry-run --config wrangler.worker.toml",
+    "deploy:worker": "wrangler deploy --cwd workers/mlc-ggits-worker",
+    "check:worker": "wrangler deploy --dry-run --cwd workers/mlc-ggits-worker",
     "typecheck:libs": "tsc --build",
     "typecheck": "corepack pnpm run typecheck:libs && corepack pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
