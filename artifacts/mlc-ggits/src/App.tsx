@@ -25,7 +25,7 @@ import { verifyCertificateById, type VerifiedCertificate } from "@/lib/certifica
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
-const HAS_API_BACKEND = API_BASE_URL.length > 0;
+const HAS_API_BACKEND = import.meta.env.VITE_DISABLE_GALLERY_API !== "true";
 type GalleryImage = { url: string; name: string };
 const LOCAL_GALLERY_STORAGE_KEY = "mlc-ggits-local-gallery-images";
 const FALLBACK_GALLERY_IMAGES = [
@@ -34,7 +34,7 @@ const FALLBACK_GALLERY_IMAGES = [
   { url: communityPhoto, name: "community-photo" },
 ];
 
-const apiPath = (path: string) => `${API_BASE_URL}${path}`;
+const apiPath = (path: string) => (API_BASE_URL ? `${API_BASE_URL}${path}` : path);
 
 const loadLocalGalleryImages = (): GalleryImage[] => {
   try {
