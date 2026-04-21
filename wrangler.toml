@@ -1,1 +1,2 @@
+name = "mlc-ggits"
 pages_build_output_dir = "artifacts/mlc-ggits/dist/public"
