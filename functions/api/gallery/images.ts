@@ -1,0 +1,1 @@
+export { onRequestGet } from "../../../../artifacts/mlc-ggits/functions/api/gallery/images";

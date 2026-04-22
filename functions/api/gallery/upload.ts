@@ -1,0 +1,1 @@
+export { onRequestPut } from "../../../../artifacts/mlc-ggits/functions/api/gallery/upload";
