@@ -114,6 +114,19 @@ const CertificateVerifier = () => {
           <p className="text-sm text-gray-200"><span className="text-gray-400">Name:</span> {result.data.name || "Not provided"}</p>
           <p className="text-sm text-gray-200"><span className="text-gray-400">Course:</span> {result.data.course || "Not provided"}</p>
           <p className="text-sm text-gray-200"><span className="text-gray-400">Date:</span> {result.data.date || "Not provided"}</p>
+          {result.data.details.length > 0 && (
+            <div className="mt-4 border-t border-[#00FF41]/20 pt-4">
+              <p className="font-mono text-xs text-[#00FF41] mb-3">// PROVIDED_DETAILS</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {result.data.details.map((detail) => (
+                  <div key={`${detail.label}-${detail.value}`} className="rounded border border-white/10 bg-black/30 px-3 py-2">
+                    <p className="text-[11px] uppercase tracking-widest text-gray-500">{detail.label}</p>
+                    <p className="text-sm text-gray-200 break-words">{detail.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
