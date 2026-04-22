@@ -10,20 +10,70 @@ export type VerifiedCertificate = {
 
 type RawCertificateData = Record<string, unknown>;
 
-const firstStringValue = (data: RawCertificateData, keys: string[]): string => {
-  for (const key of keys) {
-    const value = data[key];
-    if (typeof value === "string" && value.trim()) {
+const canonicalKey = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const normalizeString = (value: string): string => {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return "";
+  }
+
+  const quoted =
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"));
+
+  return quoted ? trimmed.slice(1, -1).trim() : trimmed;
+};
+
+const getValueByAliases = (data: RawCertificateData, aliases: string[]): unknown => {
+  const index = new Map<string, unknown>();
+  for (const [key, value] of Object.entries(data)) {
+    const normalizedKey = canonicalKey(key);
+    if (!index.has(normalizedKey)) {
+      index.set(normalizedKey, value);
+    }
+  }
+
+  for (const alias of aliases) {
+    const value = index.get(canonicalKey(alias));
+    if (value != null) {
       return value;
     }
+  }
+
+  return undefined;
+};
+
+const firstStringValue = (data: RawCertificateData, keys: string[]): string => {
+  const value = getValueByAliases(data, keys);
+  if (typeof value === "string") {
+    return normalizeString(value);
+  }
+
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
   }
 
   return "";
 };
 
+const normalizeDateString = (value: string): string => {
+  const text = normalizeString(value);
+  if (!text) {
+    return "";
+  }
+
+  const timestamp = Date.parse(text);
+  if (!Number.isNaN(timestamp)) {
+    return new Date(timestamp).toLocaleDateString();
+  }
+
+  return text;
+};
+
 const normalizeDateValue = (value: unknown): string => {
   if (typeof value === "string" && value.trim()) {
-    return value;
+    return normalizeDateString(value);
   }
 
   if (value && typeof value === "object") {
@@ -59,7 +109,7 @@ const normalizeValue = (key: string, value: unknown): string => {
   }
 
   if (typeof value === "string") {
-    return value.trim();
+    return normalizeString(value);
   }
 
   if (typeof value === "number" || typeof value === "boolean") {
@@ -115,7 +165,7 @@ export async function verifyCertificateById(id: string): Promise<{
       name: firstStringValue(raw, ["name", "fullName", "studentName", "certificateName", "recipientName"]),
       course: firstStringValue(raw, ["course", "courseName", "program", "event", "title"]),
       date: normalizeDateValue(
-        raw.date ?? raw.issuedAt ?? raw.issuedOn ?? raw.awardedAt ?? raw.dateIssued ?? raw.createdAt,
+        getValueByAliases(raw, ["date", "issuedAt", "issuedOn", "awardedAt", "dateIssued", "createdAt"]),
       ),
       details,
     },
