@@ -111,9 +111,9 @@ const CertificateVerifier = () => {
       {result && result.valid && result.data && (
         <div className="mt-4 border border-[#00FF41]/30 bg-[#00FF41]/5 p-4">
           <p className="font-mono text-sm text-[#00FF41] mb-2">VALID CERTIFICATE</p>
-          <p className="text-sm text-gray-200"><span className="text-gray-400">Name:</span> {result.data.name}</p>
-          <p className="text-sm text-gray-200"><span className="text-gray-400">Course:</span> {result.data.course}</p>
-          <p className="text-sm text-gray-200"><span className="text-gray-400">Date:</span> {result.data.date}</p>
+          <p className="text-sm text-gray-200"><span className="text-gray-400">Name:</span> {result.data.name || "Not provided"}</p>
+          <p className="text-sm text-gray-200"><span className="text-gray-400">Course:</span> {result.data.course || "Not provided"}</p>
+          <p className="text-sm text-gray-200"><span className="text-gray-400">Date:</span> {result.data.date || "Not provided"}</p>
         </div>
       )}
 
