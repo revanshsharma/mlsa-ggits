@@ -962,13 +962,13 @@ function Home() {
 
             <div className="space-y-3">
               {[
-                { rank: 1, name: "Adarsh Pandey", badges: 222 },
-                { rank: 2, name: "Pranjal Tiwari", badges: 172 },
-                { rank: 3, name: "Aastha Goutam", badges: 171 },
-                { rank: 4, name: "Sanskrati Malviya", badges: 121 },
-                { rank: 5, name: "Sanya Nema & Rishi Parashar", badges: 113 },
-                { rank: 6, name: "Aditi Dhurwey", badges: 106 },
-                { rank: 7, name: "Abhi Shukla", badges: 103 },
+                { rank: 1, name: "Rishi Parashar", badges: 341 },
+                { rank: 2, name: "Adarsh Pandey", badges: 335 },
+                { rank: 3, name: "Kartika Choudhary", badges: 269 },
+                { rank: 4, name: "Missi Kumari Sinha", badges: 200 },
+                { rank: 5, name: "Sanya Nema", badges: 190 },
+                { rank: 6, name: "Aditya Pandey", badges: 173 },
+                { rank: 7, name: "Sarthak Singh", badges: 153 },
               ].map((entry, i) => (
                 <motion.div
                   key={i}
