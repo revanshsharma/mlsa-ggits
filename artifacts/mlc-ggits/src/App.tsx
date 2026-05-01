@@ -540,7 +540,7 @@ function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
-            {/* Microsoft Campus Club Logo */}
+            {/* Microsoft Learn Community Logo */}
             <div className="flex gap-1 shrink-0">
               <div className="grid grid-cols-2 gap-[2px]">
                 <div className="w-3 h-3 bg-[#F35325]"></div>
@@ -550,7 +550,7 @@ function Home() {
               </div>
             </div>
             <span className="font-semibold text-lg hidden sm:block">
-              Microsoft Campus Club
+              Microsoft Learn Community
             </span>
             <span className="text-gray-500 hidden sm:block">|</span>
             <span className="font-mono font-bold text-[#00D4FF] tracking-tight">
@@ -788,7 +788,7 @@ function Home() {
                   potential.
                 </h2>
                 <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                  Microsoft Campus Club at GGITS is an elite hub for
+                  Microsoft Learn Community at GGITS is an elite hub for
                   developers, tinkerers, and tech enthusiasts. We bridge the gap
                   between academic theory and bleeding-edge industry practice.
                 </p>
@@ -905,7 +905,7 @@ function Home() {
               </h2>
 
               <p className="text-gray-400 text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
-                Level up your credentials. Complete Microsoft Campus Club paths, earn badges, and get officially certified — all in April.
+                Level up your credentials. Complete Microsoft Learn Community paths, earn badges, and get officially certified — all in April.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 font-mono text-sm text-gray-400 mb-10">
@@ -1119,7 +1119,7 @@ function Home() {
               </div>
               <div className="flex flex-col">
                 <span className="font-bold leading-none">
-                  Microsoft Campus Club
+                  Microsoft Learn Community
                 </span>
                 <span className="font-mono text-xs text-gray-500">
                   GGITS Jabalpur
@@ -1141,7 +1141,7 @@ function Home() {
 
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600 font-mono">
             <p>
-              © {new Date().getFullYear()} Microsoft Campus Club GGITS. All
+              © {new Date().getFullYear()} Microsoft Learn Community GGITS. All
               systems operational.
             </p>
             <p className="flex items-center gap-2">

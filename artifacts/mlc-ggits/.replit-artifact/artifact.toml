@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Microsoft Campus Club GGITS"
+title = "Microsoft Learn Community GGITS"
 version = "1.0.0"
 id = "artifacts/mlc-ggits"
 router = "path"
