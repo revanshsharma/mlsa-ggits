@@ -921,7 +921,7 @@ function Home() {
               </div>
 
               <a
-                href="https://forms.gle/2QnLRJVAV6qJT97x7"
+                href="https://forms.gle/2Sm8qAxgavCop5978"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-3 px-10 py-5 bg-[#0078D4] text-white font-bold font-mono text-lg overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(0,120,212,0.5)]"
