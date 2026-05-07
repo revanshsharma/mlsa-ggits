@@ -705,7 +705,7 @@ function Home() {
 
                   <div className="flex flex-wrap gap-4 font-mono text-sm mb-8 text-gray-300">
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
-                      <Calendar className="w-4 h-4 text-[#0078D4]" /> 11 April
+                      <Calendar className="w-4 h-4 text-[#0078D4]" /> 11 May
                     </div>
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
                       <Users className="w-4 h-4 text-[#0078D4]" /> Limited Seats
@@ -876,7 +876,7 @@ function Home() {
           </div>
         </section>
 
-        {/* April Certification Drive Section */}
+        {/* May Certification Drive Section */}
         <section id="certdrive" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative overflow-hidden">
           {/* Background glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0078D4]/10 via-transparent to-[#00FF41]/5 pointer-events-none"></div>
@@ -897,7 +897,7 @@ function Home() {
               </div>
 
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-                April{" "}
+                May{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] to-[#00D4FF]">
                   Certification
                 </span>{" "}
@@ -905,12 +905,12 @@ function Home() {
               </h2>
 
               <p className="text-gray-400 text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
-                Level up your credentials. Complete Microsoft Learn Community paths, earn badges, and get officially certified — all in April.
+                Level up your credentials. Complete Microsoft Learn Community paths, earn badges, and get officially certified — all in May.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 font-mono text-sm text-gray-400 mb-10">
                 <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
-                  <Calendar className="w-4 h-4 text-[#0078D4]" /> April 2026
+                  <Calendar className="w-4 h-4 text-[#0078D4]" /> May 2026
                 </div>
                 <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
                   <span className="w-2 h-2 rounded-full bg-[#00FF41]"></span> Free to Participate
