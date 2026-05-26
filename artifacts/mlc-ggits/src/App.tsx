@@ -536,7 +536,7 @@ function Home() {
     <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-[#0078D4] selection:text-white relative overflow-hidden">
       <FaultyTerminal
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 opacity-60 mix-blend-screen"
+        className="fixed inset-0 z-0 opacity-60 mix-blend-screen"
         scale={1.45}
         digitSize={1.2}
         timeScale={0.65}
