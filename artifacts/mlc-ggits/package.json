@@ -75,6 +75,7 @@
     "zod": "catalog:"
   },
   "dependencies": {
-    "firebase": "11.0.0"
+    "firebase": "11.0.0",
+    "ogl": "^1.0.11"
   }
 }

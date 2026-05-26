@@ -20,6 +20,7 @@ import {
   Activity,
 } from "lucide-react";
 import NotFound from "@/pages/not-found";
+import FaultyTerminal from "@/components/FaultyTerminal";
 import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
 import { verifyCertificateById, type VerifiedCertificate } from "@/lib/certificates";
 
@@ -533,7 +534,26 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-[#0078D4] selection:text-white relative overflow-hidden">
-      <MatrixRain />
+      <FaultyTerminal
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 opacity-60 mix-blend-screen"
+        scale={1.45}
+        digitSize={1.2}
+        timeScale={0.65}
+        pause={false}
+        scanlineIntensity={0.95}
+        glitchAmount={1}
+        flickerAmount={0.9}
+        noiseAmp={0.45}
+        chromaticAberration={0.15}
+        dither={0.03}
+        curvature={0.05}
+        tint="#00FF41"
+        mouseReact={false}
+        mouseStrength={0.2}
+        pageLoadAnimation={true}
+        brightness={0.85}
+      />
       <div className="scanline"></div>
 
       {/* Navigation / Header */}
