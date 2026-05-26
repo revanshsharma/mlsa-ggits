@@ -549,7 +549,7 @@ function Home() {
         dither={0.03}
         curvature={0.05}
         tint="#00FF41"
-        mouseReact={false}
+        mouseReact={true}
         mouseStrength={0.2}
         pageLoadAnimation={true}
         brightness={0.85}
