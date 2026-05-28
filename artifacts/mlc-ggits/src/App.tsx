@@ -370,7 +370,7 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative">
+    <section id="gallery" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 bg-[#0a0a0f] relative">
       <div className="absolute top-0 left-1/2 w-[600px] h-64 bg-[#6E40C9] rounded-full blur-[200px] opacity-5 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
       <div className="container mx-auto max-w-6xl">
         <div className="flex items-center gap-4 mb-4">
@@ -612,7 +612,7 @@ function Home() {
         {/* Events Section */}
         <section
           id="events"
-          className="py-20 md:py-24 px-4 sm:px-6 bg-black/40 border-y border-white/5 relative"
+          className="py-20 md:py-24 px-4 sm:px-6 bg-[#0a0a0f] border-y border-white/5 relative"
         >
           <div className="container mx-auto max-w-6xl">
             <div className="flex items-center gap-4 mb-16">
@@ -977,7 +977,7 @@ function Home() {
         </section>
 
         {/* Team Section */}
-        <section id="team" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 bg-black/30 relative">
+        <section id="team" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 bg-[#0a0a0f] relative">
           <div className="absolute bottom-0 left-1/2 w-[600px] h-64 bg-[#0078D4] rounded-full blur-[200px] opacity-5 pointer-events-none -translate-x-1/2"></div>
           <div className="container mx-auto max-w-5xl">
             <div className="flex items-center gap-4 mb-16">
