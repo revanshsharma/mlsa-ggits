@@ -494,7 +494,7 @@ function Home() {
           <div className="flex items-center gap-3">
             {/* Microsoft Campus Club Logo */}
             <div className="flex gap-1 shrink-0">
-              <img src={campusLogo} alt="Campus Club" className="w-8 h-8 object-contain rounded-sm" />
+              <img src={campusLogo} alt="Campus Club" className="w-12 h-12 sm:w-14 sm:h-14 object-contain rounded shadow-2xl drop-shadow-lg" />
             </div>
             <span className="font-semibold text-lg hidden sm:block">
               Microsoft Campus Club
@@ -665,7 +665,7 @@ function Home() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-8 py-4 bg-[#6E40C9] hover:bg-[#5a34a6] text-white font-mono transition-colors shadow-[0_0_20px_rgba(110,64,201,0.4)]"
                   >
-                    REGISTER_NOW <ExternalLink className="w-4 h-4" />
+                    TRUE_SUCCESS! <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
 
@@ -1059,7 +1059,7 @@ function Home() {
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-3">
-              <img src={campusLogo} alt="Campus Club" className="w-10 h-10 object-contain rounded-sm" />
+              <img src={campusLogo} alt="Campus Club" className="w-12 h-12 object-contain rounded shadow-lg drop-shadow-md" />
               <div className="flex flex-col">
                 <span className="font-bold leading-none">
                   Microsoft Campus Club
