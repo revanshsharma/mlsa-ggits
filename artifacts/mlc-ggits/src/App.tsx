@@ -20,7 +20,7 @@ import {
   Activity,
 } from "lucide-react";
 import NotFound from "@/pages/not-found";
-import FaultyTerminal from "@/components/FaultyTerminal";
+import ShapeGrid from "@/components/ShapeGrid";
 import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
 import { verifyCertificateById, type VerifiedCertificate } from "@/lib/certificates";
 
@@ -137,67 +137,6 @@ const CertificateVerifier = () => {
         </div>
       )}
     </div>
-  );
-};
-
-// MATRIX EFFECT COMPONENT
-const MatrixRain = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops: number[] = [];
-
-    for (let x = 0; x < columns; x++) {
-      drops[x] = 1;
-    }
-
-    const draw = () => {
-      ctx.fillStyle = "rgba(10, 10, 15, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#00FF41"; // Neon Green
-      ctx.font = `${fontSize}px "JetBrains Mono"`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    };
-
-    const interval = setInterval(draw, 33);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="matrix-bg opacity-30 pointer-events-none fixed inset-0 z-0"
-    />
   );
 };
 
@@ -534,25 +473,16 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-[#0078D4] selection:text-white relative overflow-hidden">
-      <FaultyTerminal
+      <ShapeGrid
         aria-hidden="true"
-        className="fixed inset-0 z-0 opacity-60 mix-blend-screen"
-        scale={1.45}
-        digitSize={1.2}
-        timeScale={0.65}
-        pause={false}
-        scanlineIntensity={0.95}
-        glitchAmount={1}
-        flickerAmount={0.9}
-        noiseAmp={0.45}
-        chromaticAberration={0.15}
-        dither={0.03}
-        curvature={0.05}
-        tint="#00FF41"
-        mouseReact={true}
-        mouseStrength={0.2}
-        pageLoadAnimation={true}
-        brightness={0.85}
+        className="shapegrid-bg fixed inset-0 z-0 opacity-80 mix-blend-screen"
+        speed={0.45}
+        squareSize={42}
+        direction="diagonal"
+        borderColor="rgba(120, 200, 255, 0.35)"
+        hoverFillColor="rgba(0, 212, 255, 0.16)"
+        shape="square"
+        hoverTrailAmount={4}
       />
       <div className="scanline"></div>
 
