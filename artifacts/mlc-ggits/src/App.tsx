@@ -22,6 +22,8 @@ import {
 import NotFound from "@/pages/not-found";
 import ShapeGrid from "@/components/ShapeGrid";
 import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
+// Place the provided logo file at attached_assets/Campus Club.png
+import campusLogo from "@assets/Campus Club.png";
 import { verifyCertificateById, type VerifiedCertificate } from "@/lib/certificates";
 
 const queryClient = new QueryClient();
@@ -492,12 +494,7 @@ function Home() {
           <div className="flex items-center gap-3">
             {/* Microsoft Campus Club Logo */}
             <div className="flex gap-1 shrink-0">
-              <div className="grid grid-cols-2 gap-[2px]">
-                <div className="w-3 h-3 bg-[#F35325]"></div>
-                <div className="w-3 h-3 bg-[#81BC06]"></div>
-                <div className="w-3 h-3 bg-[#05A6F0]"></div>
-                <div className="w-3 h-3 bg-[#FFBA08]"></div>
-              </div>
+              <img src={campusLogo} alt="Campus Club" className="w-8 h-8 object-contain rounded-sm" />
             </div>
             <span className="font-semibold text-lg hidden sm:block">
               Microsoft Campus Club
@@ -1062,12 +1059,7 @@ function Home() {
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-3">
-              <div className="grid grid-cols-2 gap-[2px]">
-                <div className="w-4 h-4 bg-[#F35325]"></div>
-                <div className="w-4 h-4 bg-[#81BC06]"></div>
-                <div className="w-4 h-4 bg-[#05A6F0]"></div>
-                <div className="w-4 h-4 bg-[#FFBA08]"></div>
-              </div>
+              <img src={campusLogo} alt="Campus Club" className="w-10 h-10 object-contain rounded-sm" />
               <div className="flex flex-col">
                 <span className="font-bold leading-none">
                   Microsoft Campus Club
