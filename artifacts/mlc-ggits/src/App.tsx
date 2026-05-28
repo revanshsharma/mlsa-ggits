@@ -477,7 +477,7 @@ function Home() {
         aria-hidden="true"
         className="shapegrid-bg fixed inset-0 z-0 opacity-80 mix-blend-screen"
         speed={0.45}
-        squareSize={42}
+        squareSize={100}
         direction="diagonal"
         borderColor="rgba(120, 200, 255, 0.35)"
         hoverFillColor="rgba(0, 212, 255, 0.16)"
@@ -490,7 +490,7 @@ function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
-            {/* Microsoft Learn Community Logo */}
+            {/* Microsoft Campus Club Logo */}
             <div className="flex gap-1 shrink-0">
               <div className="grid grid-cols-2 gap-[2px]">
                 <div className="w-3 h-3 bg-[#F35325]"></div>
@@ -500,7 +500,7 @@ function Home() {
               </div>
             </div>
             <span className="font-semibold text-lg hidden sm:block">
-              Microsoft Learn Community
+              Microsoft Campus Club
             </span>
             <span className="text-gray-500 hidden sm:block">|</span>
             <span className="font-mono font-bold text-[#00D4FF] tracking-tight">
@@ -729,27 +729,28 @@ function Home() {
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
+                className="rounded-2xl border border-[#66B2FF]/30 bg-[#0078D4] p-8 shadow-[0_24px_80px_rgba(0,120,212,0.28)]"
               >
-                <div className="font-mono text-[#00D4FF] mb-4">
+                <div className="font-mono text-[#D8F0FF] mb-4">
                   // README.md
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
                   Decode your <br />
                   potential.
                 </h2>
-                <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                  Microsoft Learn Community at GGITS is an elite hub for
+                <p className="text-white/90 text-lg mb-6 leading-relaxed">
+                  Microsoft Campus Club at GGITS is an elite hub for
                   developers, tinkerers, and tech enthusiasts. We bridge the gap
                   between academic theory and bleeding-edge industry practice.
                 </p>
-                <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+                <p className="text-white/90 text-lg mb-8 leading-relaxed">
                   Whether you're compiling your first "Hello World", deploying
                   scalable cloud architectures, or training neural networks, MLC
                   provides the environment, resources, and network to escalate
                   your skills.
                 </p>
 
-                <ul className="space-y-4 font-mono text-sm text-gray-300">
+                <ul className="space-y-4 font-mono text-sm text-white/90">
                   <li className="flex items-center gap-3">
                     <span className="text-[#00FF41]">~%</span> Access to
                     Microsoft ecosystem tools
@@ -771,7 +772,7 @@ function Home() {
                 viewport={{ once: true }}
                 className="relative"
               >
-                <div className="aspect-square bg-black border border-white/10 p-6 font-mono text-sm md:text-base text-gray-300 relative overflow-hidden rounded shadow-2xl">
+                <div className="aspect-square bg-[#0b2e5c] border border-[#66B2FF]/25 p-6 font-mono text-sm md:text-base text-white/85 relative overflow-hidden rounded-2xl shadow-[0_24px_80px_rgba(11,46,92,0.35)]">
                   {/* Mac style window dots */}
                   <div className="flex gap-2 mb-6 border-b border-white/10 pb-4">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -855,7 +856,7 @@ function Home() {
               </h2>
 
               <p className="text-gray-400 text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
-                Level up your credentials. Complete Microsoft Learn Community paths, earn badges, and get officially certified — all in May.
+                Level up your credentials. Complete Microsoft Campus Club paths, earn badges, and get officially certified — all in May.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 font-mono text-sm text-gray-400 mb-10">
@@ -1069,7 +1070,7 @@ function Home() {
               </div>
               <div className="flex flex-col">
                 <span className="font-bold leading-none">
-                  Microsoft Learn Community
+                  Microsoft Campus Club
                 </span>
                 <span className="font-mono text-xs text-gray-500">
                   GGITS Jabalpur
@@ -1091,7 +1092,7 @@ function Home() {
 
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600 font-mono">
             <p>
-              © {new Date().getFullYear()} Microsoft Learn Community GGITS. All
+              © {new Date().getFullYear()} Microsoft Campus Club GGITS. All
               systems operational.
             </p>
             <p className="flex items-center gap-2">
