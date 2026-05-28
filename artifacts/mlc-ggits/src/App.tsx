@@ -989,34 +989,26 @@ function Home() {
               <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#00D4FF]"></div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { name: "Aadeesh Jain", handle: "aadeesh.jain" },
-                { name: "Revansh Sharma", handle: "revansh.sharma" },
-                { name: "Anmol Singh", handle: "anmol.singh" },
-                { name: "Muskan Asati", handle: "muskan.asati" },
-              ].map((member, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="group flex flex-col items-center text-center p-6 border border-white/5 hover:border-[#00D4FF]/30 bg-black/20 transition-all duration-300 relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#00D4FF]/0 to-[#00D4FF]/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  {/* Avatar */}
-                  <div className="relative w-20 h-20 mb-4">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#0078D4] to-[#00D4FF] flex items-center justify-center text-2xl font-bold text-white font-mono">
-                      {member.name.charAt(0)}
-                    </div>
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#00FF41] border-2 border-[#0a0a0f]"></div>
+            <div className="flex justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0 }}
+                className="group flex flex-col items-center text-center p-6 border border-white/5 hover:border-[#00D4FF]/30 bg-black/20 transition-all duration-300 relative overflow-hidden max-w-xs"
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-[#00D4FF]/0 to-[#00D4FF]/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                {/* Avatar */}
+                <div className="relative w-24 h-24 mb-4">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#0078D4] to-[#00D4FF] flex items-center justify-center text-3xl font-bold text-white font-mono">
+                    A
                   </div>
-                  <h3 className="font-bold text-white text-lg mb-1 leading-tight">{member.name}</h3>
-                  <p className="font-mono text-xs text-[#00D4FF] mb-3">@{member.handle}</p>
-                  <span className="text-[10px] font-mono px-2 py-1 bg-[#0078D4]/10 border border-[#0078D4]/20 text-[#0078D4] tracking-widest uppercase">Core Member</span>
-                </motion.div>
-              ))}
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#00FF41] border-2 border-[#0a0a0f]"></div>
+                </div>
+                <h3 className="font-bold text-white text-lg mb-1 leading-tight">Aadeesh Jain</h3>
+                <p className="font-mono text-xs text-[#00D4FF] mb-3">@aadeesh.jain</p>
+                <span className="text-[10px] font-mono px-2 py-1 bg-[#0078D4]/10 border border-[#0078D4]/20 text-[#0078D4] tracking-widest uppercase">Core Member</span>
+              </motion.div>
             </div>
           </div>
         </section>
