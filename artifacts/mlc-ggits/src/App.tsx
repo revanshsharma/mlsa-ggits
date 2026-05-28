@@ -1080,8 +1080,8 @@ function Home() {
               systems operational.
             </p>
             <p className="flex items-center gap-2">
-              Designed with <span className="text-[#00FF41]">♥</span> by
-              Community & Revansh Sharma
+               <span className="text-[#00FF41]"></span> 
+              
             </p>
           </div>
         </div>
