@@ -16,6 +16,7 @@ import {
   Code2,
   ArrowRight,
   Linkedin,
+  Instagram,
   ExternalLink,
   Activity,
 } from "lucide-react";
@@ -1068,8 +1069,18 @@ function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-[#0078D4] transition-colors"
+                aria-label="LinkedIn"
               >
                 <Linkedin className="w-6 h-6" />
+              </a>
+              <a
+                href="https://www.instagram.com/mccggits?igsh=MTJhNDJxbXJ1dHJyZA=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-[#E1306C] transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-6 h-6" />
               </a>
             </div>
           </div>
