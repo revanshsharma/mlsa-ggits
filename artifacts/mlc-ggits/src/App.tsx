@@ -25,8 +25,6 @@ import ShapeGrid from "@/components/ShapeGrid";
 import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
 // Place the provided logo file at attached_assets/Campus Club.png
 import campusLogo from "@assets/Campus Club.png";
-// GGITS college logo (attached asset)
-import ggitsLogo from "@assets/ggitslogo.png";
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
@@ -591,10 +589,7 @@ function Home() {
             </div>
             <span className="font-semibold text-lg hidden sm:block">Microsoft Campus Club</span>
             <span className="text-gray-500 hidden sm:block">|</span>
-            <div className="flex items-center gap-2">
-              <img src={ggitsLogo} alt="GGITS Logo" className="w-10 h-10 object-contain rounded-full shadow-md" />
-              <span className="font-mono font-bold text-[#00D4FF] tracking-tight hidden sm:block">GGITS</span>
-            </div>
+            <span className="font-mono font-bold text-[#00D4FF] tracking-tight hidden sm:block">GGITS</span>
           </div>
           <nav className="w-full sm:w-auto flex gap-4 sm:gap-6 font-mono text-xs sm:text-sm overflow-x-auto whitespace-nowrap pb-1 sm:pb-0">
             <a
