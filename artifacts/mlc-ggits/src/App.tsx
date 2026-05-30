@@ -87,6 +87,8 @@ const fileToDataURL = (file: File) =>
   });
 
 const LINKTREE_STORAGE_KEY = "mlc-ggits-linktree-click-counts";
+const LINKEDIN_URL = "https://www.linkedin.com/company/ms-ggits/";
+const INSTAGRAM_URL = "https://www.instagram.com/mccggits?igsh=MTJhNDJxbXJ1dHJyZA==";
 
 type LinkTreeEntry = {
   id: string;
@@ -100,13 +102,13 @@ const LINKTREE_LINKS: LinkTreeEntry[] = [
     id: "instagram",
     label: "Instagram",
     description: "Drop your Instagram URL here.",
-    href: "#",
+    href: INSTAGRAM_URL,
   },
   {
     id: "linkedin",
     label: "LinkedIn",
     description: "Drop your LinkedIn URL here.",
-    href: "#",
+    href: LINKEDIN_URL,
   },
   {
     id: "website",
@@ -1013,7 +1015,7 @@ function Home() {
 
             <div className="flex gap-6">
               <a
-                href="https://www.linkedin.com/company/ms-ggits/"
+                href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-[#0078D4] transition-colors"
@@ -1022,7 +1024,7 @@ function Home() {
                 <Linkedin className="w-6 h-6" />
               </a>
               <a
-                href="https://www.instagram.com/mccggits?igsh=MTJhNDJxbXJ1dHJyZA=="
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-[#E1306C] transition-colors"
