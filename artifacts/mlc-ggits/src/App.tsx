@@ -61,6 +61,25 @@ const saveLocalGalleryImages = (images: GalleryImage[]) => {
   }
 };
 
+const mergeGalleryImages = (...imageGroups: GalleryImage[][]): GalleryImage[] => {
+  const merged: GalleryImage[] = [];
+  const seen = new Set<string>();
+
+  for (const group of imageGroups) {
+    for (const image of group) {
+      const dedupeKey = `${image.url}::${image.name}`;
+      if (seen.has(dedupeKey)) {
+        continue;
+      }
+
+      seen.add(dedupeKey);
+      merged.push(image);
+    }
+  }
+
+  return merged;
+};
+
 const fileToDataURL = (file: File) =>
   new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -347,7 +366,7 @@ const GallerySection = () => {
       const data = await res.json() as { images: GalleryImage[] };
       const localImages = loadLocalGalleryImages();
       if (data.images?.length) {
-        setImages(data.images);
+        setImages(mergeGalleryImages(data.images, localImages));
       } else if (localImages.length) {
         setImages(localImages);
       } else {
