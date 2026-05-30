@@ -25,7 +25,6 @@ import ShapeGrid from "@/components/ShapeGrid";
 import communityPhoto from "@assets/WhatsApp_Image_2026-04-05_at_19.12.06_1775396542624.jpeg";
 // Place the provided logo file at attached_assets/Campus Club.png
 import campusLogo from "@assets/Campus Club.png";
-import { verifyCertificateById, type VerifiedCertificate } from "@/lib/certificates";
 
 const queryClient = new QueryClient();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
@@ -68,78 +67,193 @@ const fileToDataURL = (file: File) =>
     reader.readAsDataURL(file);
   });
 
-const CertificateVerifier = () => {
-  const [certificateId, setCertificateId] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<{ valid: boolean; data?: VerifiedCertificate } | null>(null);
+const LINKTREE_STORAGE_KEY = "mlc-ggits-linktree-click-counts";
 
-  const onVerify = async () => {
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    try {
-      const verification = await verifyCertificateById(certificateId);
-      setResult(verification);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Verification failed.");
-    } finally {
-      setLoading(false);
+type LinkTreeEntry = {
+  id: string;
+  label: string;
+  description: string;
+  href: string;
+};
+
+const LINKTREE_LINKS: LinkTreeEntry[] = [
+  {
+    id: "instagram",
+    label: "Instagram",
+    description: "Drop your Instagram URL here.",
+    href: "#",
+  },
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    description: "Drop your LinkedIn URL here.",
+    href: "#",
+  },
+  {
+    id: "website",
+    label: "Website",
+    description: "Drop your website or portfolio URL here.",
+    href: "#",
+  },
+  {
+    id: "gallery",
+    label: "Gallery",
+    description: "Drop your gallery or photo dump URL here.",
+    href: "#",
+  },
+  {
+    id: "community",
+    label: "Community",
+    description: "Drop your community chat URL here.",
+    href: "#",
+  },
+];
+
+const loadLinkClickCounts = (): Record<string, number> => {
+  try {
+    const raw = window.localStorage.getItem(LINKTREE_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, number>;
+    if (!parsed || typeof parsed !== "object") return {};
+    return Object.fromEntries(
+      Object.entries(parsed).filter(([, value]) => typeof value === "number" && Number.isFinite(value)),
+    );
+  } catch {
+    return {};
+  }
+};
+
+const saveLinkClickCounts = (counts: Record<string, number>) => {
+  try {
+    window.localStorage.setItem(LINKTREE_STORAGE_KEY, JSON.stringify(counts));
+  } catch {
+    // Ignore localStorage quota or privacy-mode failures.
+  }
+};
+
+const LinkTreeSection = () => {
+  const [clickCounts, setClickCounts] = useState<Record<string, number>>(() => loadLinkClickCounts());
+
+  const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, link: LinkTreeEntry) => {
+    setClickCounts((currentCounts) => {
+      const nextCounts = {
+        ...currentCounts,
+        [link.id]: (currentCounts[link.id] ?? 0) + 1,
+      };
+      saveLinkClickCounts(nextCounts);
+      return nextCounts;
+    });
+
+    if (!link.href || link.href === "#") {
+      event.preventDefault();
     }
   };
 
+  const totalClicks = Object.values(clickCounts).reduce((sum, value) => sum + value, 0);
+
   return (
-    <div className="mt-12 mx-auto max-w-2xl border border-[#00D4FF]/20 bg-black/40 backdrop-blur-sm p-5 sm:p-6 text-left">
-      <p className="font-mono text-xs text-[#00D4FF] mb-3">// CERTIFICATE_VERIFY</p>
-      <div className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="text"
-          value={certificateId}
-          onChange={(e) => setCertificateId(e.target.value)}
-          placeholder="Enter certificate ID (e.g. CERT-001)"
-          className="flex-1 px-4 py-3 bg-black border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#00D4FF]/50 font-mono text-sm"
-        />
-        <button
-          onClick={() => void onVerify()}
-          disabled={loading}
-          className="px-5 py-3 bg-[#00D4FF]/10 border border-[#00D4FF]/40 text-[#00D4FF] font-mono text-sm hover:bg-[#00D4FF]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    <section id="links" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0078D4]/10 via-transparent to-[#00FF41]/5 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 w-[700px] h-[300px] bg-[#0078D4] rounded-full blur-[180px] opacity-10 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+
+      <div className="container mx-auto max-w-5xl relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          {loading ? "VERIFYING..." : "VERIFY"}
-        </button>
-      </div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00FF41]/30 bg-[#00FF41]/5 text-[#00FF41] font-mono text-sm mb-8">
+            <span className="w-2 h-2 rounded-full bg-[#00FF41] animate-pulse"></span>
+            LINK_HUB
+          </div>
 
-      {error && (
-        <p className="mt-4 text-sm font-mono text-red-400">{error}</p>
-      )}
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+            Connect through a link hub
+          </h2>
 
-      {result && result.valid && result.data && (
-        <div className="mt-4 border border-[#00FF41]/30 bg-[#00FF41]/5 p-4">
-          <p className="font-mono text-sm text-[#00FF41] mb-2">VALID CERTIFICATE</p>
-          <p className="text-sm text-gray-200"><span className="text-gray-400">Name:</span> {result.data.name || "Not provided"}</p>
-          <p className="text-sm text-gray-200"><span className="text-gray-400">Course:</span> {result.data.course || "Not provided"}</p>
-          <p className="text-sm text-gray-200"><span className="text-gray-400">Date:</span> {result.data.date || "Not provided"}</p>
-          {result.data.details.length > 0 && (
-            <div className="mt-4 border-t border-[#00FF41]/20 pt-4">
-              <p className="font-mono text-xs text-[#00FF41] mb-3">// PROVIDED_DETAILS</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {result.data.details.map((detail) => (
-                  <div key={`${detail.label}-${detail.value}`} className="rounded border border-white/10 bg-black/30 px-3 py-2">
-                    <p className="text-[11px] uppercase tracking-widest text-gray-500">{detail.label}</p>
-                    <p className="text-sm text-gray-200 break-words">{detail.value}</p>
-                  </div>
-                ))}
-              </div>
+          <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
+            Replace the placeholder URLs in this section when you have them ready. Every click is counted and saved in this browser.
+          </p>
+
+          <div className="mt-10 grid grid-cols-2 gap-4 max-w-xl mx-auto text-left">
+            <div className="border border-white/10 bg-black/30 px-4 py-4 rounded-xl">
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-gray-500 mb-2">Total clicks</p>
+              <p className="text-3xl font-bold text-white">{totalClicks}</p>
             </div>
-          )}
-        </div>
-      )}
+            <div className="border border-white/10 bg-black/30 px-4 py-4 rounded-xl">
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-gray-500 mb-2">Tracked links</p>
+              <p className="text-3xl font-bold text-white">{LINKTREE_LINKS.length}</p>
+            </div>
+          </div>
+        </motion.div>
 
-      {result && !result.valid && (
-        <div className="mt-4 border border-red-400/30 bg-red-400/5 p-4">
-          <p className="font-mono text-sm text-red-300">INVALID CERTIFICATE ID</p>
+        <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr] items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="rounded-3xl border border-white/10 bg-black/30 backdrop-blur-sm p-6 sm:p-8 text-left"
+          >
+            <p className="font-mono text-xs text-[#00D4FF] mb-4">// LINKTREE_OVERVIEW</p>
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">One place for every outbound link</h3>
+            <p className="text-gray-400 leading-relaxed">
+              This block is ready for your social profiles, community links, and project pages. Update the href values later and the click tracker will continue working.
+            </p>
+            <div className="mt-8 flex items-center gap-3 text-sm text-gray-400">
+              <Activity className="w-4 h-4 text-[#00FF41]" />
+              Click counts persist locally in this browser.
+            </div>
+          </motion.div>
+
+          <div className="space-y-4">
+            {LINKTREE_LINKS.map((link, index) => {
+              const clicks = clickCounts[link.id] ?? 0;
+
+              return (
+                <motion.a
+                  key={link.id}
+                  href={link.href || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => handleLinkClick(event, link)}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: index * 0.05 }}
+                  className="group block rounded-2xl border border-white/10 bg-black/35 hover:border-[#00D4FF]/40 hover:bg-black/45 transition-all duration-300 p-5"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-[#00D4FF] mb-2">/{link.id}</p>
+                      <h4 className="text-xl sm:text-2xl font-semibold text-white group-hover:text-[#00D4FF] transition-colors">
+                        {link.label}
+                      </h4>
+                      <p className="mt-2 text-sm sm:text-base text-gray-400">{link.description}</p>
+                    </div>
+
+                    <div className="shrink-0 text-right">
+                      <div className="text-3xl font-bold text-white">{clicks}</div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-gray-500">clicks</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center gap-2 text-sm text-[#00FF41]">
+                    <span className="h-px flex-1 bg-gradient-to-r from-[#00FF41]/0 via-[#00FF41]/40 to-[#00FF41]/0"></span>
+                    <span className="flex items-center gap-2">
+                      Open link <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                    <span className="h-px flex-1 bg-gradient-to-r from-[#00FF41]/0 via-[#00FF41]/40 to-[#00FF41]/0"></span>
+                  </div>
+                </motion.a>
+              );
+            })}
+          </div>
         </div>
-      )}
-    </div>
+      </div>
+    </section>
   );
 };
 
@@ -201,7 +315,6 @@ const Counter = ({
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-
   useEffect(() => {
     if (inView) {
       let startTime: number;
@@ -519,10 +632,10 @@ function Home() {
               /about
             </a>
             <a
-              href="#certdrive"
+              href="#links"
               className="text-[#00D4FF] hover:text-white transition-colors"
             >
-              /certdrive
+              /links
             </a>
             <a
               href="#gallery"
@@ -825,66 +938,7 @@ function Home() {
           </div>
         </section>
 
-        {/* May Certification Drive Section */}
-        <section id="certdrive" className="py-20 md:py-24 px-4 sm:px-6 border-t border-white/5 relative overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0078D4]/10 via-transparent to-[#00FF41]/5 pointer-events-none"></div>
-          <div className="absolute top-1/2 left-1/2 w-[700px] h-[300px] bg-[#0078D4] rounded-full blur-[180px] opacity-10 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-
-          <div className="container mx-auto max-w-4xl relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
-            >
-              {/* Terminal badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00FF41]/30 bg-[#00FF41]/5 text-[#00FF41] font-mono text-sm mb-8">
-                <span className="w-2 h-2 rounded-full bg-[#00FF41] animate-pulse"></span>
-                REGISTRATION_OPEN
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-                May{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0078D4] to-[#00D4FF]">
-                  Certification
-                </span>{" "}
-                Drive
-              </h2>
-
-              <p className="text-gray-400 text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
-                Level up your credentials. Complete Microsoft Campus Club paths, earn badges, and get officially certified — all in May.
-              </p>
-
-              <div className="flex flex-wrap justify-center gap-6 font-mono text-sm text-gray-400 mb-10">
-                <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
-                  <Calendar className="w-4 h-4 text-[#0078D4]" /> May 2026
-                </div>
-                <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
-                  <span className="w-2 h-2 rounded-full bg-[#00FF41]"></span> Free to Participate
-                </div>
-                <div className="flex items-center gap-2 bg-black/40 px-4 py-2 border border-white/5">
-                  <Trophy className="w-4 h-4 text-[#FFBA08]" /> Badges & Certificates
-                </div>
-              </div>
-
-              <a
-                href="https://forms.gle/2Sm8qAxgavCop5978"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-3 px-10 py-5 bg-[#0078D4] text-white font-bold font-mono text-lg overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(0,120,212,0.5)]"
-              >
-                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                <span className="relative z-10 flex items-center gap-2">
-                  REGISTER_NOW <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </a>
-
-              <CertificateVerifier />
-            </motion.div>
-          </div>
-        </section>
+        <LinkTreeSection />
 
         {/* Stats Section */}
         <section className="py-20 px-4 sm:px-6 border-t border-white/5 bg-black/20">
