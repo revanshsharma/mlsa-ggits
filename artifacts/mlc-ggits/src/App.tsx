@@ -152,7 +152,7 @@ const LinkTreeSection = () => {
   const totalClicks = Object.values(clickCounts).reduce((sum, value) => sum + value, 0);
 
   return (
-    <section id="links" className="py-12 px-4 sm:px-6 border-t border-white/5 relative">
+    <section id="links" className="py-16 px-4 sm:px-6 border-t border-white/5 relative">
       <div className="container mx-auto max-w-4xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -161,26 +161,26 @@ const LinkTreeSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-black/20 text-[#00FF41] font-mono text-xs mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-black/20 text-[#00FF41] font-mono text-sm mb-4">
             LINK HUB
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Links & Resources</h2>
-          <p className="text-gray-400 text-sm max-w-2xl mx-auto">Compact hub for your social profiles, projects and community links. Clicks are tracked locally.</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">Links & Resources</h2>
+          <p className="text-gray-400 text-base max-w-2xl mx-auto">Compact hub for your social profiles, projects and community links. Clicks are tracked locally.</p>
         </motion.div>
 
         <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-400 font-mono">Tracked links</div>
-            <div className="px-3 py-2 bg-black/30 border border-white/8 rounded text-white font-semibold">{LINKTREE_LINKS.length}</div>
+            <div className="px-4 py-2 bg-black/30 border border-white/8 rounded text-white font-semibold text-lg">{LINKTREE_LINKS.length}</div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-400 font-mono">Total clicks</div>
-            <div className="px-3 py-2 bg-black/30 border border-white/8 rounded text-white font-semibold">{totalClicks}</div>
+            <div className="px-4 py-2 bg-black/30 border border-white/8 rounded text-white font-semibold text-lg">{totalClicks}</div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {LINKTREE_LINKS.map((link) => {
             const clicks = clickCounts[link.id] ?? 0;
             return (
@@ -190,21 +190,21 @@ const LinkTreeSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => handleLinkClick(e, link)}
-                className="flex flex-col justify-between gap-2 p-3 bg-black/30 border border-white/8 rounded-lg hover:scale-[1.01] transition-transform"
+                className="group flex flex-col justify-between gap-3 p-4 bg-black/30 border border-white/8 rounded-xl transform transition-transform transition-shadow duration-300 ease-out hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,212,255,0.12)]"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-white truncate">{link.label}</div>
-                    <div className="text-xs text-gray-400 truncate">{link.description}</div>
+                    <div className="text-lg font-semibold text-white truncate">{link.label}</div>
+                    <div className="text-sm text-gray-400 truncate">{link.description}</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold text-white">{clicks}</div>
-                    <div className="text-[10px] text-gray-500 uppercase">clicks</div>
+                    <div className="text-xl font-bold text-white">{clicks}</div>
+                    <div className="text-xs text-gray-500 uppercase">clicks</div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <div className="text-xs text-gray-400">/{link.id}</div>
-                  <ExternalLink className="w-4 h-4 text-gray-400" />
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#00D4FF] transition-colors" />
                 </div>
               </a>
             );
