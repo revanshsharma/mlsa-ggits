@@ -171,7 +171,7 @@ const LinkTreeSection = () => {
   const totalClicks = Object.values(clickCounts).reduce((sum, value) => sum + value, 0);
 
   return (
-    <section id="links" className="py-16 px-4 sm:px-6 border-t border-white/5 relative">
+    <section id="links" className="py-16 px-4 sm:px-6 border-t border-white/5 bg-[#0d1117] relative">
       <div className="container mx-auto max-w-4xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -180,7 +180,7 @@ const LinkTreeSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-black/20 text-[#00FF41] font-mono text-sm mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-[#111827] text-[#00FF41] font-mono text-sm mb-4">
             LINK HUB
           </div>
 
@@ -191,11 +191,11 @@ const LinkTreeSection = () => {
         <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-400 font-mono">Tracked links</div>
-            <div className="px-4 py-2 bg-black/30 border border-white/8 rounded text-white font-semibold text-lg">{LINKTREE_LINKS.length}</div>
+            <div className="px-4 py-2 bg-[#111827] border border-white/10 rounded text-white font-semibold text-lg">{LINKTREE_LINKS.length}</div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-400 font-mono">Total clicks</div>
-            <div className="px-4 py-2 bg-black/30 border border-white/8 rounded text-white font-semibold text-lg">{totalClicks}</div>
+            <div className="px-4 py-2 bg-[#111827] border border-white/10 rounded text-white font-semibold text-lg">{totalClicks}</div>
           </div>
         </div>
 
@@ -209,7 +209,7 @@ const LinkTreeSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => handleLinkClick(e, link)}
-                className="group flex flex-col justify-between gap-3 p-4 bg-black/30 border border-white/8 rounded-xl transform transition-transform transition-shadow duration-300 ease-out hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,212,255,0.12)]"
+                className="group flex flex-col justify-between gap-3 p-4 bg-[#111827] border border-white/10 rounded-xl transform transition-transform transition-shadow duration-300 ease-out hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,212,255,0.12)]"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
