@@ -112,9 +112,9 @@ const LINKTREE_LINKS: LinkTreeEntry[] = [
   },
   {
     id: "website",
-    label: "Website",
-    description: "Drop your website or portfolio URL here.",
-    href: "#",
+    label: "Microsoft Learn",
+    description: "Check out Microsoft Learn for free learning resources and documentation.",
+    href: "https://learn.microsoft.com/en-us/?wt.mc_id=studentamb_476046",
   },
   {
     id: "gallery",
