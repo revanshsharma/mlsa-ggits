@@ -1043,7 +1043,7 @@ function Home() {
             <p className="flex items-center gap-4">
               <span className="text-[#00FF41]">Contact:</span>
               <a
-                href="mailto:itsmeaadeesh@gmail.com"
+                href="mailto:msa@ggits.org"
                 className="text-gray-400 hover:text-white hover:underline"
               >
                 itsmeaadeesh@gmail.com
