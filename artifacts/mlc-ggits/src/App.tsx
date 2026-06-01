@@ -1040,9 +1040,20 @@ function Home() {
               © {new Date().getFullYear()} Microsoft Campus Club GGITS. All
               systems operational.
             </p>
-            <p className="flex items-center gap-2">
-               <span className="text-[#00FF41]"></span> 
-              
+            <p className="flex items-center gap-4">
+              <span className="text-[#00FF41]">Contact:</span>
+              <a
+                href="mailto:itsmeaadeesh@gmail.com"
+                className="text-gray-400 hover:text-white hover:underline"
+              >
+                itsmeaadeesh@gmail.com
+              </a>
+              <a
+                href="tel:+918319183115"
+                className="text-gray-400 hover:text-white hover:underline"
+              >
+                +91 8319183115
+              </a>
             </p>
           </div>
         </div>
