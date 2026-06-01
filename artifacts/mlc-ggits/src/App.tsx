@@ -1046,7 +1046,7 @@ function Home() {
                 href="mailto:msa@ggits.org"
                 className="text-gray-400 hover:text-white hover:underline"
               >
-                itsmeaadeesh@gmail.com
+                msa@ggits.org
               </a>
               <a
                 href="tel:+918319183115"
