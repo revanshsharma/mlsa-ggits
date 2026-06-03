@@ -117,12 +117,6 @@ const LINKTREE_LINKS: LinkTreeEntry[] = [
     href: "https://learn.microsoft.com/en-us/?wt.mc_id=studentamb_476046",
   },
   {
-    id: "gallery",
-    label: "Gallery",
-    description: "Drop your gallery or photo dump URL here.",
-    href: "#",
-  },
-  {
     id: "Modules",
     label: "Modules",
     description: "Here are your Microsoft Learn modules.",
