@@ -120,7 +120,7 @@ const LINKTREE_LINKS: LinkTreeEntry[] = [
     id: "Modules",
     label: "Modules",
     description: "Here are your Microsoft Learn modules.",
-    href: "#",
+    href: "https://linktr.ee/mcc.ggits",
   },
 ];
 
