@@ -728,9 +728,7 @@ function Home() {
                     <span className="text-[#6E40C9]">AI Skills Fest</span>
                   </h3>
                   <p className="text-gray-400 text-lg mb-8 max-w-xl leading-relaxed">
-                    An exclusive hands-on event to explore AI-powered
-                    development with GitHub Copilot. Level up your coding game
-                    with Microsoft's AI pair programmer.
+                    Join us for a free, weeklong virtual experience to build practical AI skills. Whether you're deep in tech, leading teams, in a business role, or just getting started with AI, there’s something here for you. Drop in, explore the lineup, and skill up alongside a global community.
                   </p>
 
                   <div className="flex flex-wrap gap-4 font-mono text-sm mb-8 text-gray-300">
