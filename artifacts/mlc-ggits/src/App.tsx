@@ -724,8 +724,8 @@ function Home() {
                     FEATURED EVENT
                   </div>
                   <h3 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-                    GitHub Copilot <br />
-                    <span className="text-[#6E40C9]">Dev Days</span>
+                    Microsoft <br />
+                    <span className="text-[#6E40C9]">AI Skills Fest</span>
                   </h3>
                   <p className="text-gray-400 text-lg mb-8 max-w-xl leading-relaxed">
                     An exclusive hands-on event to explore AI-powered
