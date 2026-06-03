@@ -733,7 +733,7 @@ function Home() {
 
                   <div className="flex flex-wrap gap-4 font-mono text-sm mb-8 text-gray-300">
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
-                      <Calendar className="w-4 h-4 text-[#0078D4]" /> 11 May
+                      <Calendar className="w-4 h-4 text-[#0078D4]" /> 8th - 12th June
                     </div>
                     <div className="flex items-center gap-2 bg-black/50 px-4 py-2 rounded border border-white/5">
                       <Users className="w-4 h-4 text-[#0078D4]" /> Limited Seats
