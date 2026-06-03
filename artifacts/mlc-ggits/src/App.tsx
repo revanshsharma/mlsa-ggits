@@ -123,9 +123,9 @@ const LINKTREE_LINKS: LinkTreeEntry[] = [
     href: "#",
   },
   {
-    id: "community",
-    label: "Community",
-    description: "Drop your community chat URL here.",
+    id: "Modules",
+    label: "Modules",
+    description: "Here are your Microsoft Learn modules.",
     href: "#",
   },
 ];
