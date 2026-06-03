@@ -753,8 +753,8 @@ function Home() {
                 <div className="w-full md:w-1/3 flex justify-center z-10">
                   <div className="relative w-48 h-48 sm:w-64 sm:h-64 drop-shadow-[0_0_40px_rgba(110,64,201,0.6)]">
                     <img
-                      src={`${import.meta.env.BASE_URL}copilot-logo.jpeg`}
-                      alt="GitHub Copilot"
+                      src={`${import.meta.env.BASE_URL}ai-skills-fest-logo.jpeg`}
+                      alt="AI Skills Fest"
                       className="w-full h-full object-contain rounded-2xl"
                     />
                   </div>
