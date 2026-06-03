@@ -741,7 +741,7 @@ function Home() {
                   </div>
 
                   <a
-                    href="https://luma.com/dwdrrbzt"
+                    href="https://aiskillsnavigator.microsoft.com/events/AISF2026?UTM_Source=AISF_Amp&UTM_Medium=Amp&UTM_Campaign=StudentAmbassador&wt.mc_id=studentamb_476435"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-8 py-4 bg-[#6E40C9] hover:bg-[#5a34a6] text-white font-mono transition-colors shadow-[0_0_20px_rgba(110,64,201,0.4)]"
